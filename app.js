@@ -3,7 +3,7 @@
  */
 
 var express = require('express'),
-    http    = require('https'),
+    https    = require('https'),
     fs      = require('fs'),
     mysql		= require('mysql'),
     routes  = require('./routes'),
@@ -49,10 +49,6 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-});
-
 function databaseInstance(){
   var connection = mysql.createConnection({
     host     : 'localhost',
@@ -73,9 +69,7 @@ function login(req, res, next){
 //GET pages
 app.get('/', routes.index);
 app.get('/users', user.list);
-
-//POST pages
-app.post('/auth', auth);
+app.get('/organiserPanel', login, routes.organiserPanel);
 
 //handling functions
 var auth = function(req, res){
@@ -83,9 +77,10 @@ var auth = function(req, res){
 			password = req.body.password,
 			user = req.body.user;
 
-	var loginQuery = 'SELECT * FROM ' + databaseName + '.' + events +
-  ' WHERE eventOrganiser ' +  ' LIKE "' + user.toLowerCase() + '", ' +
-  'AND organiserPassword ' + ' LIKE "' + password + '"';
+	var loginQuery = 'SELECT * FROM ' + databaseName + '.' + eventsTable +
+  ' WHERE eventOrganiser ' +  ' = "' + user.toLowerCase() + '" ' +
+  'AND organiserPassword ' + ' = "' + password + '"';
+  console.log(loginQuery);
 
   if(user === '' || password === ''){
     res.redirect('/'); //obviously we need a fancy validation stuff instead.
@@ -110,6 +105,10 @@ var auth = function(req, res){
     });
   }
 };
+
+
+//POST pages
+app.post('/auth', auth);
 
 https.createServer(httpsStuff, app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
