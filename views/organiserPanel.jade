@@ -1,29 +1,19 @@
-extends layout
+extends organiser_layout
+
+block exclusive-stylesheets
 
 block content
-		div.navbar.navbar-inverse.navbar-fixed-top
-      div.navbar-inner
-        div.container-fluid
-          button(class='btn btn-navbar', data-target='.nav-collapse', data-toggle='collapse', type='button')
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
-          a.brand(href='#') Echo - Bravo
-          div.nav-collapse.collapse
-            p.navbar-text.pull-right Logged in as 
-              a.navbar-link(href='#') usuario       
-            ul.nav
-              li.active
-                a(href='#') Creación de sitios
-              li
-                a(href='#about') acción dos 
-              li
-                a(href='#contact') acción tres
-
-block scripts
-		
+	.container-fluid{clear:both}
+		.row-fluid
+			.span3
+				ul.(class='nav nav-list')
+					li.nav-header	Pre-registros
+					li.active
+						a(href='#')	Listado 
+					li
+						a(href='#1')	Buscar
+					li
+						a(href='#2')	Eliminar
+			.span9
 
 block exclusive-scripts
-  //for development. We use local scripts
-  script(src='javascripts/angular/angular.min.js')
-  script(src='javascripts/jquery/jquery.min.js')
