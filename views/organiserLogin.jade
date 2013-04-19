@@ -1,0 +1,31 @@
+extends layout
+
+block content
+  div.container
+    h2.centered-text ¡Hola Organizador!
+    form.form-signin(action='auth', method='POST')
+      h2.centered-text Por favor inicia sesión
+      input(class='input-block-level',
+            id='user',
+            name='user',
+            type='text',
+            placeholder='usuario').required
+      input(class='input-block-level',
+            id='password',
+            name='password',
+            type='password',
+            placeholder='contraseña').required
+      div.clear-fix
+      hr
+      div
+        button(type="submit").btn.btn-primary#login
+          i.icon-lock.icon-white
+          | &nbsp; Iniciar sesión
+        //label#remember-me.checkbox Recuérdame
+          input(type="checkbox", checked='checked').push-up
+
+
+block exclusive-scripts
+  //for development. We use local scripts
+  script(src='javascripts/angular/angular.min.js')
+  script(src='javascripts/jquery/jquery.min.js')

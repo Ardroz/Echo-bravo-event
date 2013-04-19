@@ -10,3 +10,7 @@ exports.index = function(req, res){
 exports.organiserPanel = function(req, res){
   res.render('organiserPanel', { title: 'echo_bravo' });
 };
+
+exports.organiserLogin = function(req, res){
+  res.render('organiserLogin', { title: 'echo_bravo' });
+};

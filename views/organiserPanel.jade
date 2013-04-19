@@ -1,14 +1,29 @@
 extends layout
 
 block content
-  p Welcome to the organiserpanel
+		div.navbar.navbar-inverse.navbar-fixed-top
+      div.navbar-inner
+        div.container-fluid
+          button(class='btn btn-navbar', data-target='.nav-collapse', data-toggle='collapse', type='button')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand(href='#') Echo - Bravo
+          div.nav-collapse.collapse
+            p.navbar-text.pull-right Logged in as 
+              a.navbar-link(href='#') usuario       
+            ul.nav
+              li.active
+                a(href='#') Creación de sitios
+              li
+                a(href='#about') acción dos 
+              li
+                a(href='#contact') acción tres
 
-block custom-scripts
+block scripts
+		
+
+block exclusive-scripts
   //for development. We use local scripts
   script(src='javascripts/angular/angular.min.js')
   script(src='javascripts/jquery/jquery.min.js')
-  //- for production. We use cdn minified scripts.
-      tab back twice to add them to the page and comment 
-      or delete the local links
-      script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js')
-      script(src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')

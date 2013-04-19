@@ -70,6 +70,7 @@ function login(req, res, next){
 app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/organiserPanel', login, routes.organiserPanel);
+app.get('/organiserLogin', routes.organiserLogin);
 
 //handling functions
 var auth = function(req, res){
@@ -105,7 +106,6 @@ var auth = function(req, res){
     });
   }
 };
-
 
 //POST pages
 app.post('/auth', auth);

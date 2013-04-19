@@ -4,11 +4,18 @@ html
     title= title
     block stylesheets
       link(rel='stylesheet', href='/stylesheets/bootstrap/bootstrap.css')
-      link(rel='stylesheet', href='/stylesheets/bootstrap/responsive.css')    
-    block custom-stylesheets
+      link(rel='stylesheet', href='/stylesheets/bootstrap/responsive.css')
+      link(href='http://fonts.googleapis.com/css?family=Oswald',
+        rel='stylesheet', type='text/css')   
+    block exclusive-stylesheets
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
   body
     block content
 
     block scripts
     
-    block custom-scripts
+    block exclusive-scripts
