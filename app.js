@@ -1,13 +1,30 @@
-
 /**
  * Module dependencies.
  */
 
 var express = require('express'),
-    http    = require('http'),
+    http    = require('https'),
+    fs      = require('fs'),
+    mysql		= require('mysql'),
     routes  = require('./routes'),
     path    = require('path'),
     user    = require('./routes/user');
+
+//global variables:	
+var aesKey			= 'c!A=wq(0c&yw@3w',
+	databaseName	= 'echodb',
+	eventsTable		= 'events',
+	eventName			= 'evento',
+	eventId				= '0000000001',
+	prePartakersTable = 'prePartakers' + eventId,
+	partakersTable 		= 'partakers' + eventId,
+	echosTable				= 'echos'	+ eventId,
+	messagesTable 		= 'messages' + eventId;
+
+var httpsStuff = {
+    key: fs.readFileSync('./privatekey.pem'),
+    cert: fs.readFileSync('./certificate.pem')
+};
 
 var app = express();
 
@@ -32,9 +49,68 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+http.createServer(app).listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
+});
+
+function databaseInstance(){
+  var connection = mysql.createConnection({
+    host     : 'localhost',
+    password : '',
+    user     : 'root'
+  });
+  return connection;
+}
+
+function login(req, res, next){
+	if(req.session.user){
+		next();
+		}else{
+    res.redirect('/');
+  }
+}
+
+//GET pages
 app.get('/', routes.index);
 app.get('/users', user.list);
 
-http.createServer(app).listen(app.get('port'), function(){
+//POST pages
+app.post('/auth', auth);
+
+//handling functions
+var auth = function(req, res){
+	var database = new databaseInstance(),
+			password = req.body.password,
+			user = req.body.user;
+
+	var loginQuery = 'SELECT * FROM ' + databaseName + '.' + events +
+  ' WHERE eventOrganiser ' +  ' LIKE "' + user.toLowerCase() + '", ' +
+  'AND organiserPassword ' + ' LIKE "' + password + '"';
+
+  if(user === '' || password === ''){
+    res.redirect('/'); //obviously we need a fancy validation stuff instead.
+  }else{
+    database.query(loginQuery, function(error, result, row){
+      if(!error) {
+        if(result.length > 0){
+          req.session.user = user;
+          //res.render('createEvent', { title: 'Creación de eventos' });
+          res.redirect('/organiserPanel');
+        }else{
+          res.redirect('/');
+        }
+      }else{
+        console.log('Error');
+        /*
+         * In case of SQL injection inputs, like '"' or '"""' the page simply does
+         * nothing. Nothing until a real user or pass are submited, so i don't see
+         * the point on validate these stuff
+        */
+      }
+    });
+  }
+};
+
+https.createServer(httpsStuff, app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
