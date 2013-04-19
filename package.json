@@ -1,0 +1,23 @@
+{
+  "author" : "Your-name <your.email@example.com",
+  "dependencies": {
+    "express": "3.1.1",
+    "jade": "0.28.2",
+    "less-middleware": "0.1.11"
+  },
+  "description": "Your project description",
+  "engines": {
+    "node": ">=0.8"
+  },
+  "license": "GPL v3.0",
+  "name": "your-project-name",
+  "private": true,
+  "repository" : {
+        "type": "git",
+        "url": "your-github-repository"
+    },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "version": "1.0.0"
+}
