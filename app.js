@@ -70,6 +70,8 @@ function login(req, res, next){
 app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/organiserPanel', login, routes.organiserPanel);
+app.get('/organiserPanelRecords', login, routes.organiserPanelRecords);
+app.get('/organiserPanelMessages', login, routes.organiserPanelMessages);
 app.get('/organiserLogin', routes.organiserLogin);
 
 //handling functions

@@ -1,0 +1,30 @@
+extends organiser_layout
+
+block exclusive-stylesheets
+
+block content
+	.container-fluid
+		.row-fluid
+			.span2
+				ul.nav.nav-list
+					li.nav-header
+						h4	Mensajes
+					li.active
+						a(href='#list')	Listado
+					li
+						a(href='#search')	Nuevos
+					li
+						a(href='#delete')	Eliminar
+			.span9
+				h2.text-center	Lista de Registros
+				table.table.table-hover
+					tr.success
+						td
+							h4	Nombre del asistente
+						td
+							h4	Mensaje
+					tr
+						td	Daniel
+						td	Ola k ase?
+					
+block exclusive-scripts

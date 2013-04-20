@@ -2,7 +2,7 @@ doctype html
 html(lang='es')
   head
     meta(charset='utf-8')
-    title = title
+    title Echo-bravo-event
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(name='description', content='')
     meta(name='author', content='')
@@ -10,7 +10,6 @@ html(lang='es')
     block stylesheets
     link(href='/stylesheets/bootstrap/bootstrap.css', rel='stylesheet')
     link(href='/stylesheets/bootstrap/responsive.css', rel='stylesheet')
-    link(href='/stylesheets/bootstrap/navs.css', rel='stylesheet')
     block exclusive-stylesheets
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -26,19 +25,20 @@ html(lang='es')
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.brand(href='#') Echo-bravo-event
+          a.brand(href='#') Echo-bravo-Luis
           div.nav-collapse.collapse
             p.navbar-text.pull-right Logged in as 
               a.navbar-link(href='#') organiser       
             ul.nav
               li.active
-                a(href='#') Pre-registros
+                a(href='organiserPanel') Pre-registros
               li
-                a(href='#registers') Registros 
+                a(href='organiserPanelRecords') Registros 
               li
-                a(href='#messages') Mensajes
+                a(href='organiserPanelMessages') Mensajes
               li
                 a(href='#echos') Echos
+    hr
     block content
 
     block scripts

@@ -3,17 +3,42 @@ extends organiser_layout
 block exclusive-stylesheets
 
 block content
-	.container-fluid{clear:both}
-		.row-fluid
-			.span3
-				ul.(class='nav nav-list')
-					li.nav-header	Pre-registros
-					li.active
-						a(href='#')	Listado 
-					li
-						a(href='#1')	Buscar
-					li
-						a(href='#2')	Eliminar
+	.container-fluid
+		.row-fluid#list
+			include 	sidebarOrganiserPanel
+			.span9#list
+				h2.text-center	Pre-registros
+				table.table.table-hover
+					tr.info
+						td
+							h4	Id del asistente
+						td
+							h4	Nombre
+						td
+							h4	Apellido Paterno
+						td
+							h4	Apellido Materno
+						td
+							h4	Correo
+					tr
+						td	0001
+						td	Daniel
+						td	Rodriguez
+						td	Rosas
+						td	darr.0725@gmail.com
+		.row-fluid.hidden#search
+			include 	sidebarOrganiserPanel
 			.span9
+				h2.text-center	Buscar
+				table.table.table-hover
+					.hero-unit
+						h1	Who are you looking for?
+		.row-fluid.hidden#delete
+			include 	sidebarOrganiserPanel
+			.span9
+				h2.text-center	Eliminar
+				table.table.table-hover
+					.hero-unit
+						h1	Who are you want to erase from here?
 
 block exclusive-scripts
