@@ -9,22 +9,22 @@ function changeRowFluidPanel(event){
 	var clickedLi = +$(this).data('row-name');
 	switch(clickedLi){
 		case 1:
-			$(this).closest('.row-fluid').fadeOut();
+			$(this).closest('.row-fluid').slideUp();
 			$(this).closest('.container-fluid').find('.row-fluid').addClass('hidden');
 			$(this).closest('.container-fluid').find('#list').removeClass('hidden');
-			$(this).closest('.container-fluid').find('#list').fadeIn();
+			$(this).closest('.container-fluid').find('#list').slideDown();
 		break;
 		case 2:
-		  $(this).closest('.row-fluid').fadeOut();
+		  $(this).closest('.row-fluid').slideUp();
 		  $(this).closest('.container-fluid').find('.row-fluid').addClass('hidden');
 			$(this).closest('.container-fluid').find('#search').removeClass('hidden');
-			$(this).closest('.container-fluid').find('#search').fadeIn();
+			$(this).closest('.container-fluid').find('#search').slideDown();
 		break;
 		case 3:
-			$(this).closest('.row-fluid').fadeOut();
+			$(this).closest('.row-fluid').slideUp();
 			$(this).closest('.container-fluid').find('.row-fluid').addClass('hidden');
 			$(this).closest('.container-fluid').find('#delete').removeClass('hidden');
-			$(this).closest('.container-fluid').find('#delete').fadeIn();
+			$(this).closest('.container-fluid').find('#delete').slideDown();
 		break;
 		default:
   }
