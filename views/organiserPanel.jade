@@ -6,7 +6,7 @@ block content
 	.container-fluid
 		.row-fluid#list
 			include 	sidebarOrganiserPanel
-			.span9#list
+			.span9
 				h2.text-center	Pre-registros
 				table.table.table-hover
 					tr.info
@@ -39,6 +39,7 @@ block content
 				h2.text-center	Eliminar
 				table.table.table-hover
 					.hero-unit
-						h1	Who are you want to erase from here?
+						h1	Who do you want to erase from here?
 
 block exclusive-scripts
+	script(async, src='javascripts/own/panelControlFunctions.js')
