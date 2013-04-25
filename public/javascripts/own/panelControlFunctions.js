@@ -1,33 +1,24 @@
 function changeSidebarActive(){
-	$(this).closest('.sidebar').find('.active').removeClass('active')
+	$(this).closest('.sidebar').find('.active').removeClass('active');
 	$(this).addClass('active');
+}
+
+function expandRowFluid(clickedLiName){
+	var identificador = '#'+ clickedLiName;
+	console.log('entre ' + clickedLiName + identificador);
+	
+	$('.row-fluid').fadeOut(0,'swing', function(){
+		$('.container-fluid').find(identificador).removeClass('hidden');
+		$('.container-fluid').find(identificador).fadeIn();
+	});
 }
 
 function changeRowFluidPanel(event){
 	event.stopPropagation();
 	event.preventDefault();
-	var clickedLi = +$(this).data('row-name');
-	switch(clickedLi){
-		case 1:
-			$(this).closest('.row-fluid').slideUp();
-			$(this).closest('.container-fluid').find('.row-fluid').addClass('hidden');
-			$(this).closest('.container-fluid').find('#list').removeClass('hidden');
-			$(this).closest('.container-fluid').find('#list').slideDown();
-		break;
-		case 2:
-		  $(this).closest('.row-fluid').slideUp();
-		  $(this).closest('.container-fluid').find('.row-fluid').addClass('hidden');
-			$(this).closest('.container-fluid').find('#search').removeClass('hidden');
-			$(this).closest('.container-fluid').find('#search').slideDown();
-		break;
-		case 3:
-			$(this).closest('.row-fluid').slideUp();
-			$(this).closest('.container-fluid').find('.row-fluid').addClass('hidden');
-			$(this).closest('.container-fluid').find('#delete').removeClass('hidden');
-			$(this).closest('.container-fluid').find('#delete').slideDown();
-		break;
-		default:
-  }
+	var clickedLi = +$(this).data('row-code');
+	var clickedLiName = $(this).data('row-name');
+	expandRowFluid(clickedLiName);
 }
 
 $('document').ready(function(){
