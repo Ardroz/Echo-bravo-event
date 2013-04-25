@@ -7,39 +7,21 @@ block content
 		.row-fluid#list
 			include 	sidebarOrganiserPanel
 			.span9
-				h2.text-center	Pre-registros
-				table.table.table-hover
-					tr.info
-						td
-							h4	Id del asistente
-						td
-							h4	Nombre
-						td
-							h4	Apellido Paterno
-						td
-							h4	Apellido Materno
-						td
-							h4	Correo
-					tr
-						td	0001
-						td	Daniel
-						td	Rodriguez
-						td	Rosas
-						td	darr.0725@gmail.com
-		.row-fluid.hidden#search
-			include 	sidebarOrganiserPanel
-			.span9
-				h2.text-center	Buscar
-				table.table.table-hover
-					.hero-unit
-						h1	Who are you looking for?
-		.row-fluid.hidden#delete
-			include 	sidebarOrganiserPanel
-			.span9
-				h2.text-center	Eliminar
-				table.table.table-hover
-					.hero-unit
-						h1	Who do you want to erase from here?
+				.container#list
+					h2.text-center	Pre-registros
+					table.table.table-hover
+						.hero-unit
+							h1	Who are you going to register?
+				.container.hidden#search
+					h2.text-center	Buscar
+					table.table.table-hover
+						.hero-unit
+							h1	Who are you going to register?
+				.container.hidden#delete
+					h2.text-center	Eliminar
+					table.table.table-hover
+						.hero-unit
+							h1	Who are you going to register?
 
 block exclusive-scripts
 	script(async, src='javascripts/own/panelControlFunctions.js')
