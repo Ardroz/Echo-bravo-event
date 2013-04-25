@@ -64,7 +64,7 @@ CREATE  TABLE IF NOT EXISTS `echodb`.`partakers` (
   `partakerUser` VARCHAR(45) NOT NULL ,
   `partakerPassword` VARCHAR(45) NOT NULL ,
   `partakerBaucher` VARCHAR(45) NOT NULL ,
-  PRIMARY KEY (`partakerId`) )|
+  PRIMARY KEY (`partakerId`) )
 ENGINE = InnoDB;
 
 
