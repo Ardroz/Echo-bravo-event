@@ -4,39 +4,39 @@ block exclusive-stylesheets
 
 block content
 	.container-fluid
-		.row-fluid#list
+		.row-fluid
 			.span2
 				ul.nav.nav-list.sidebar
 					li.nav-header
-						h4	Pre-registros
+						h4	Mensajes
 					li.active(data-li-name="list")
-						a()	Lista
+						a	Lista
+					li(data-li-name="newEchos")
+						a	Nuevo
 					li(data-li-name="search")
-						a()	Buscar
-					li(data-li-name="validate")
-						a()	Validar
+						a	Buscar
 					li(data-li-name="delete")
-						a()	Eliminar
+						a	Eliminar
 			.span9
 				.container#list
-					h2.text-center	Pre-registros
+					h2.text-center	Registros
 					table.table.table-hover
 						.hero-unit
 							h1	Who are you going to register?
+				.container.hidden#newEchos
+					h2.text-center	Nuevos Echos
+					table.table.table-hover
+						.hero-unit
+							h1	Who are you going to search?
 				.container.hidden#search
 					h2.text-center	Buscar
 					table.table.table-hover
 						.hero-unit
-							h1	Who are you going to register?
-				.container.hidden#validate
-					h2.text-center	Validar
-					table.table.table-hover
-						.hero-unit
-							h1	Who are you going to register?
+							h1	Who are you going to search?
 				.container.hidden#delete
 					h2.text-center	Eliminar
 					table.table.table-hover
 						.hero-unit
-							h1	Who are you going to register?
-
+							h1	Who are you going to delete??
+					
 block exclusive-scripts

@@ -5,50 +5,30 @@ block exclusive-stylesheets
 block content
 	.container-fluid
 		.row-fluid#list
-			include 	sidebarOrganiserPanelRecords
+			.span2
+				ul.nav.nav-list.sidebar
+					li.nav-header
+						h4	Registros
+					li.active(data-li-name="list")
+						a	Lista
+					li(data-li-name="search")
+						a	Buscar
+					li(data-li-name="delete")
+						a	Eliminar
 			.span9
-				h2.text-center	Registros
-				table.table.table-hover
-					tr.info
-						td
-							h4	Id del asistente
-						td
-							h4	Nombre
-						td
-							h4	Apellido Paterno
-						td
-							h4	Usuario
-						td
-							h4	Contraseña
-						td
-							h4	Credencial
-					tr
-						td	0001
-						td	Daniel
-						td	Rodriguez
-						td	DanBlack13
-						td	pass
-						td	
-							button.btn.btn-info	Ver credencial.
-		.row-fluid.hidden#search
-			include 	sidebarOrganiserPanelRecords
-			.span9
-				h2.text-center	Buscar
-				table.table.table-hover
-					.hero-unit
-						h1	Who are you looking for?
-		.row-fluid.hidden#validate
-			include 	sidebarOrganiserPanelRecords
-			.span9
-				h2.text-center	Validar pre-registros
-				table.table.table-hover
-					.hero-unit
-						h1	Who are you are going to validate?
-		.row-fluid.hidden#delete
-			include 	sidebarOrganiserPanelRecords
-			.span9
-				h2.text-center	Delete
-				table.table.table-hover
-					.hero-unit
-						h1	Who are you going ti destroy for?
+				.container#list
+					h2.text-center	Registros
+					table.table.table-hover
+						.hero-unit
+							h1	Who are you going to register?
+				.container.hidden#search
+					h2.text-center	Buscar
+					table.table.table-hover
+						.hero-unit
+							h1	Who are you going to search?
+				.container.hidden#delete
+					h2.text-center	Eliminar
+					table.table.table-hover
+						.hero-unit
+							h1	Who are you going to delete??
 block exclusive-scripts

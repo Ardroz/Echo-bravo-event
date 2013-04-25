@@ -72,6 +72,7 @@ app.get('/users', user.list);
 app.get('/organiserPanel', login, routes.organiserPanel);
 app.get('/organiserPanelRecords', login, routes.organiserPanelRecords);
 app.get('/organiserPanelMessages', login, routes.organiserPanelMessages);
+app.get('/organiserPanelEchos', login, routes.organiserPanelEchos);
 app.get('/organiserLogin', routes.organiserLogin);
 
 //handling functions

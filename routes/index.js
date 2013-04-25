@@ -19,6 +19,10 @@ exports.organiserPanelMessages = function(req, res){
   res.render('organiserPanelMessages', { title: 'echo_bravo' });
 };
 
+exports.organiserPanelEchos = function(req, res){
+  res.render('organiserPanelEchos', { title: 'echo_bravo' });
+};
+
 exports.organiserLogin = function(req, res){
   res.render('organiserLogin', { title: 'echo_bravo' });
 };
