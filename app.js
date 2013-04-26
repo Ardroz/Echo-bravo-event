@@ -110,21 +110,13 @@ var auth = function(req, res){
 };
 
 var getPrepartakersTable = function(req, res){
-  var database = new databaseInstance(),
-      password = req.body.password,
-      user = req.body.user;
+  var database = new databaseInstance();
 
   var selectAllPrepartakersQuery = 'SELECT * FROM ' + databaseName + '.prepartakers';
-  console.log(selectAllPrepartakersQuery);
 
   database.query(selectAllPrepartakersQuery, function(error, result, row){
     if(!error) {
-      if(result.length > 0){
-        console.log(result);
-
-        res.send(result);
-      }else{
-      }
+      res.send(result);
     }else{
       console.log('Error selectAllPrepartakersQuery');
     }

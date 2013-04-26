@@ -46,13 +46,28 @@ function prepartakersTableFilter(){
 	}
 }
 
-
-
 $(document).ready(function(){
 	$('.sidebar').on('click','li',changeContainerPanel);
 	$('#prepartakersFilterForm').on('keyup','.prepartakersFilter',prepartakersTableFilter);
 	
 	$.post('getPrepartakersTable',function(data) {
-  	console.log(data);
+		var trToAppend;
+		trToAppend = $("<tr>"+
+									"<td class = 'nameColumn iterator' data-prepartaker-name='"+ data[0].partakerName +"'>"+ data[0].partakerName +"</td>"+
+									"<td>"+ data[0].partakerMail +"</td>"+
+									"<td>"+ data[0].partakerPhone +"</td>"+
+									"<td>"+ data[0].partakerAddress+"</td>"+
+									"</tr>");
+		$('#prepartakersTable').append(trToAppend);
+
+  	for( i = 1;i < data.length;i++){
+			trToAppend = $("<tr>"+
+										"<td class = 'nameColumn' data-prepartaker-name='"+ data[i].partakerName +"'>"+ data[i].partakerName +"</td>"+
+										"<td>"+ data[i].partakerMail +"</td>"+
+										"<td>"+ data[i].partakerPhone +"</td>"+
+										"<td>"+ data[i].partakerAddress+"</td>"+
+										"</tr>");
+			$('#prepartakersTable').append(trToAppend);
+  	}
 	});
 })
