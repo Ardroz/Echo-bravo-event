@@ -84,7 +84,6 @@ var auth = function(req, res){
 	var loginQuery = 'SELECT * FROM ' + databaseName + '.' + eventsTable +
   ' WHERE eventOrganiser ' +  ' = "' + user.toLowerCase() + '" ' +
   'AND organiserPassword ' + ' = "' + password + '"';
-  console.log(loginQuery);
 
   if(user === '' || password === ''){
     res.redirect('/'); //obviously we need a fancy validation stuff instead.
@@ -110,8 +109,31 @@ var auth = function(req, res){
   }
 };
 
+var getPrepartakersTable = function(req, res){
+  var database = new databaseInstance(),
+      password = req.body.password,
+      user = req.body.user;
+
+  var selectAllPrepartakersQuery = 'SELECT * FROM ' + databaseName + '.prepartakers';
+  console.log(selectAllPrepartakersQuery);
+
+  database.query(selectAllPrepartakersQuery, function(error, result, row){
+    if(!error) {
+      if(result.length > 0){
+        console.log(result);
+
+        res.send(result);
+      }else{
+      }
+    }else{
+      console.log('Error selectAllPrepartakersQuery');
+    }
+  });
+
+}
 //POST pages
 app.post('/auth', auth);
+app.post('/getPrepartakersTable', getPrepartakersTable)
 
 https.createServer(httpsStuff, app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

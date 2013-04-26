@@ -46,7 +46,13 @@ function prepartakersTableFilter(){
 	}
 }
 
+
+
 $(document).ready(function(){
 	$('.sidebar').on('click','li',changeContainerPanel);
 	$('#prepartakersFilterForm').on('keyup','.prepartakersFilter',prepartakersTableFilter);
+	
+	$.post('getPrepartakersTable',function(data) {
+  	console.log(data);
+	});
 })
