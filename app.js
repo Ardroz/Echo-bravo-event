@@ -69,7 +69,7 @@ function login(req, res, next){
 //GET pages
 app.get('/', routes.index);
 app.get('/users', user.list);
-app.get('/organiserPanel',  routes.organiserPanel);
+app.get('/organiserPanel', routes.organiserPanel);
 app.get('/organiserPanelRecords', login, routes.organiserPanelRecords);
 app.get('/organiserPanelMessages', login, routes.organiserPanelMessages);
 app.get('/organiserPanelEchos', login, routes.organiserPanelEchos);
@@ -110,30 +110,26 @@ var auth = function(req, res){
 };
 
 var getPrepartakersTable = function(req, res){
-  var database = new databaseInstance(),
-      password = req.body.password,
-      user = req.body.user;
+  var database = new databaseInstance();
 
   var selectAllPrepartakersQuery = 'SELECT * FROM ' + databaseName + '.prepartakers';
-  console.log(selectAllPrepartakersQuery);
 
   database.query(selectAllPrepartakersQuery, function(error, result, row){
     if(!error) {
-      if(result.length > 0){
-        console.log(result);
-
-        res.send(result);
-      }else{
-      }
+      res.send(result);
     }else{
       console.log('Error selectAllPrepartakersQuery');
     }
   });
+}
 
+var searchPrepartaker = function(req, res){
+  console.log(req.body.name);
 }
 //POST pages
 app.post('/auth', auth);
-app.post('/getPrepartakersTable', getPrepartakersTable)
+app.post('/getPrepartakersTable', getPrepartakersTable);
+app.post('/searchPrepartaker', searchPrepartaker);
 
 https.createServer(httpsStuff, app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

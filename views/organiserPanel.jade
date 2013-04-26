@@ -27,26 +27,21 @@ block content
 							td
 								h3	Nombre
 							td
-								h3	Apellidos
+								h3	E-mail
 							td
-								h3	Correo
-						tr
-							td.nameColumn.iterator(data-prepartaker-name="Daniel")	Daniel
-							td	Rodriguez Rosas
-							td	darr.0725@gmail.com
-						tr
-							td.nameColumn(data-prepartaker-name="Luis")	Luis
-							td	Rodriguez Rosas
-							td	noesmodaestuestilo@gmail.com
-						tr
-							td.nameColumn(data-prepartaker-name="Juan")	Juan
-							td	Perez Sanchez
-							td	juanimonin@gmail.com
+								h3	Teléfono
+							td
+								h3	Dirección
 				.container.hidden#search
 					h2.text-center	Buscar
-					table.table.table-hover
-						.hero-unit
-							h1	Who are you going to register?
+					form(action='#')
+						input(id='name',
+							name='name',
+							type='text',
+							placeholder='Nombre').required
+						button(type='submit')
+								i.icon-lock.icon-white
+								| &nbsp; Iniciar sesión
 				.container.hidden#validate
 					h2.text-center	Validar
 					table.table.table-hover
