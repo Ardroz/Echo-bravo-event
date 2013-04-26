@@ -69,7 +69,7 @@ function login(req, res, next){
 //GET pages
 app.get('/', routes.index);
 app.get('/users', user.list);
-app.get('/organiserPanel', login, routes.organiserPanel);
+app.get('/organiserPanel',  routes.organiserPanel);
 app.get('/organiserPanelRecords', login, routes.organiserPanelRecords);
 app.get('/organiserPanelMessages', login, routes.organiserPanelMessages);
 app.get('/organiserPanelEchos', login, routes.organiserPanelEchos);

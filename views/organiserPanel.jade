@@ -20,9 +20,28 @@ block content
 			.span9
 				.container#list
 					h2.text-center	Pre-registros
-					table.table.table-hover
-						.hero-unit
-							h1	Who are you going to register?
+					form.form-search.text-right#prepartakersFilterForm
+						input.input-medium.search-query.prepartakersFilter(type='text')
+					table.table.table-hover#prepartakersTable
+						tr
+							td
+								h3	Nombre
+							td
+								h3	Apellidos
+							td
+								h3	Correo
+						tr
+							td.nameColumn.hi(data-prepartaker-name="Daniel")	Daniel
+							td	Rodriguez Rosas
+							td	darr.0725@gmail.com
+						tr
+							td.nameColumn(data-prepartaker-name="Luis")	Luis
+							td	Rodriguez Rosas
+							td	noesmodaestuestilo@gmail.com
+						tr
+							td.nameColumn(data-prepartaker-name="Juan")	Juan
+							td	Perez Sanchez
+							td	juanimonin@gmail.com
 				.container.hidden#search
 					h2.text-center	Buscar
 					table.table.table-hover
@@ -38,5 +57,4 @@ block content
 					table.table.table-hover
 						.hero-unit
 							h1	Who are you going to register?
-
 block exclusive-scripts
