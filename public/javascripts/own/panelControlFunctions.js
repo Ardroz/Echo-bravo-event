@@ -1,9 +1,3 @@
-
-$(document).ready(function(){
-	$('.sidebar').on('click','li',changeContainerPanel);
-	$('#prepartakersFilterForm').on('keyup','.prepartakersFilter',prepartakersTableFilter);
-})
-
 function changeContainerPanel(event){
 	event.preventDefault();
 	event.stopPropagation();
@@ -18,25 +12,27 @@ function changeContainerPanel(event){
 }
 
 function prepartakersTableFilter(){
-	var iteratorRow = $('.nameColumn').filter('.iterator').parent();
-	var name = $('.nameColumn').filter('.iterator').data('prepartaker-name').toLowerCase();
-	var text = $(this).val().toLowerCase();	
-	var tableLength = $('.nameColumn').length;
+	var iteratorRow = $('.nameColumn').filter('.iterator').parent(),
+			name = $('.nameColumn').filter('.iterator').data('prepartaker-name').toLowerCase(),
+			text = $(this).val().toLowerCase(),
+			tableLength = $('.nameColumn').length,
+			pattern=new RegExp(text),
+			i = 2;
 
 	if(text == ''){
 		$('.nameColumn').parent().slideDown();
 	}else{
-		if(name == text){
+		if(pattern.test(name)){
 			iteratorRow.slideDown();	
 		}else{
 			iteratorRow.slideUp();	
 		}
 
-		for (var i = 2; i <= tableLength; i++) {
+		for (i; i <= tableLength; i++) {
 			name = $('.nameColumn').filter('.iterator').parent().next().children(':first-child').data('prepartaker-name').toLowerCase();
 			iteratorRow = $('.nameColumn').filter('.iterator').parent().next().children(':first-child').parent();
 			//Comparacion
-			if(name == text){
+			if(pattern.test(name)){
 				iteratorRow.slideDown();	
 			}else{
 				iteratorRow.slideUp();	
@@ -49,3 +45,8 @@ function prepartakersTableFilter(){
 		$('.nameColumn:first').addClass('iterator');
 	}
 }
+
+$(document).ready(function(){
+	$('.sidebar').on('click','li',changeContainerPanel);
+	$('#prepartakersFilterForm').on('keyup','.prepartakersFilter',prepartakersTableFilter);
+})
