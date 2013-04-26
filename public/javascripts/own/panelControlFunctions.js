@@ -1,3 +1,9 @@
+
+$(document).ready(function(){
+	$('.sidebar').on('click','li',changeContainerPanel);
+	$('#prepartakersFilterForm').on('keyup','.prepartakersFilter',prepartakersTableFilter);
+})
+
 function changeContainerPanel(event){
 	event.preventDefault();
 	event.stopPropagation();
@@ -12,12 +18,34 @@ function changeContainerPanel(event){
 }
 
 function prepartakersTableFilter(){
-	var nombre = $('.nameColumn').filter('.hi').text();
-	console.log(nombre);
-	console.log($('.nameColumn').filter('.hi').parent().next().children(':first-child').text());
-}
+	var iteratorRow = $('.nameColumn').filter('.iterator').parent();
+	var name = $('.nameColumn').filter('.iterator').data('prepartaker-name').toLowerCase();
+	var text = $(this).val().toLowerCase();	
+	var tableLength = $('.nameColumn').length;
 
-$(document).ready(function(){
-	$('.sidebar').on('click','li',changeContainerPanel);
-	$('#prepartakersFilterForm').on('keyup','.prepartakersFilter',prepartakersTableFilter)
-})
+	if(text == ''){
+		$('.nameColumn').parent().slideDown();
+	}else{
+		if(name == text){
+			iteratorRow.slideDown();	
+		}else{
+			iteratorRow.slideUp();	
+		}
+
+		for (var i = 2; i <= tableLength; i++) {
+			name = $('.nameColumn').filter('.iterator').parent().next().children(':first-child').data('prepartaker-name').toLowerCase();
+			iteratorRow = $('.nameColumn').filter('.iterator').parent().next().children(':first-child').parent();
+			//Comparacion
+			if(name == text){
+				iteratorRow.slideDown();	
+			}else{
+				iteratorRow.slideUp();	
+			}
+			$('.nameColumn').filter('.iterator').parent().next().children(':first-child').addClass('iterator');
+			$('.nameColumn').filter('.iterator:first').removeClass('iterator');
+		};
+
+		$('.nameColumn').filter('.iterator').removeClass('iterator');
+		$('.nameColumn:first').addClass('iterator');
+	}
+}
