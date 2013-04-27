@@ -51,6 +51,7 @@ $(document).ready(function(){
 	$('#prepartakersFilterForm').on('keyup','.prepartakersFilter',prepartakersTableFilter);
 	
 	$.post('getPrepartakersTable',function(data) {
+<<<<<<< HEAD
 		var trToAppend;
 		trToAppend = $("<tr>"+
 									"<td class = 'nameColumn iterator' data-prepartaker-name='"+ data[0].partakerName +"'>"+ data[0].partakerName +"</td>"+
@@ -69,5 +70,9 @@ $(document).ready(function(){
 										"</tr>");
 			$('#prepartakersTable').append(trToAppend);
   	}
+=======
+  	console.log(data[0].partakerName);
+  	console.log(data[1].partakerName);
+>>>>>>> necesario
 	});
 })
