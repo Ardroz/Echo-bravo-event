@@ -124,12 +124,46 @@ var getPrepartakersTable = function(req, res){
 }
 
 var searchPrepartaker = function(req, res){
-  console.log(req.body.name);
+  var database = new databaseInstance();
+  var searchPrepartakerQuery =  'SELECT * FROM ' + databaseName + '.prepartakers ' + 'WHERE partakerName = "' + req.body.name + '"';
+
+  database.query(searchPrepartakerQuery, function(error, result, row){
+    if(!error) {
+      res.send(result);
+    }else{
+      console.log('Error selectAllPrepartakersQuery');
+    }
+  });
 }
+
+var modifyPrepartaker = function(req, res){
+  var database = new databaseInstance();
+  var newName = req.body.name;
+  var newMail = req.body.mail;
+  var newPhone = req.body.phone;
+  var newAddress = req.body.address;
+  var name = req.body.nameToChange;
+
+  var updatePrepartakerQuery =  'UPDATE  '+databaseName+'.prepartakers SET '+
+                                'partakerName = "' +newName+'",'+
+                                'partakerMail = "' +newMail+'",'+
+                                'partakerPhone = "' +newPhone+'",'+
+                                'partakerAddress = "' +newAddress+'" WHERE partakerName = "' + name + '"'; 
+
+  database.query(updatePrepartakerQuery, function(error, result, row){
+    if(!error) {
+      res.redirect('/organiserPanel');
+    }else{
+      console.log('Error selectAllPrepartakersQuery');
+    }
+  });
+}
+
 //POST pages
 app.post('/auth', auth);
 app.post('/getPrepartakersTable', getPrepartakersTable);
 app.post('/searchPrepartaker', searchPrepartaker);
+app.post('/modifyPrepartaker', modifyPrepartaker);
 
 https.createServer(httpsStuff, app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

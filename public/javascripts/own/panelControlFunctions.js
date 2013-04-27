@@ -46,28 +46,87 @@ function prepartakersTableFilter(){
 	}
 }
 
+function buttonValidate(){
+	var name = $(this).closest('tr').find('.nameColumn').data('prepartaker-name');
+	$('#prepartakersAdicionalInfoContainer').fadeIn();
+}
+
+function buttonModify(event){
+	event.preventDefault();
+	var name = $(this).closest('tr').find('.nameColumn').data('prepartaker-name');
+	$('#prepartakersAdicionalInfoContainer').hide();
+	$('#prepartakersAdicionalInfoContainer').fadeIn();
+	$('#modifyFormContainer').children().remove();
+	$.post('searchPrepartaker',  {name: name} ,function(response) {
+		var form = $('<form action="/modifyPrepartaker" method="POST" id="modifyForm" class="form-horizontal">'+
+									'<div class="control-group">'+
+										'<label for="name" class="control-label pull-right"> Nombre</label>'+
+										'<div class="controls">'+
+											'<input type="text" id="name" name="name" required="required" class="input-large" value="'+response[0].partakerName+'">'+
+										'</div>'+
+									'</div>'+
+									'<div class="control-group">'+
+										 '<label for="mail" class="control-label">  Correo</label>'+
+										'<div class="controls">'+
+											'<input type="email" id="mail" name="mail" required="required" class="input-large" value="'+response[0].partakerMail+'">'+
+										'</div>'+
+									'</div>'+
+									'<div class="control-group">'+
+										 '<label for="phone" class="control-label">  Teléfono</label>'+
+										'<div class="controls">'+
+											'<input type="number" id="phone" name="phone" required="required" class="input-large" value="'+response[0].partakerPhone+'">'+
+										'</div>'+
+									'</div>'+
+									'<div class="control-group">'+
+										 '<label for="address" class="control-label">  Dirección</label>'+
+										'<div class="controls">'+
+											'<input type="text" id="address" name="address" required="required" class="input-large" value="'+response[0].partakerAddress+'">'+
+										'</div>'+
+									'</div>'+ 
+									'<input class="hidden" type="text" name="nameToChange" id="nameToChange" value="'+ response[0].partakerName +'">'+
+									'<button type="submit" class="btn btn-warning btn-large btn-block">  Modificar</button>'+
+								'</form>');
+		$('#modifyFormContainer').append(form);
+	});
+}
+
+function buttonDelete(){
+	var name = $(this).closest('tr').find('.nameColumn').data('prepartaker-name');
+	$('#prepartakersAdicionalInfoContainer').fadeIn();
+}
+
+function hideAddicionalPanel(){
+	$(this).parent().fadeOut();
+}
+
 $(document).ready(function(){
 	$('.sidebar').on('click','li',changeContainerPanel);
-	$('#prepartakersFilterForm').on('keyup','.prepartakersFilter',prepartakersTableFilter);
+	$('#prepartakersFilterForm').on('keyup','.prepartakersFilter',prepartakersTableFilter);	
+	$('#prepartakersTable').on('click','.btn-success',buttonValidate);
+	$('#prepartakersTable').on('click','.btn-warning',buttonModify);
+	$('#prepartakersTable').on('click','.btn-danger',buttonDelete);
+	$('#prepartakersAdicionalInfoContainer').on('click','.btn-mini',hideAddicionalPanel);
 	
-	$.post('getPrepartakersTable',function(data) {
+	$.post('getPrepartakersTable',function(response) {
 		var trToAppend;
 		trToAppend = $("<tr>"+
-									"<td class = 'nameColumn iterator' data-prepartaker-name='"+ data[0].partakerName +"'>"+ data[0].partakerName +"</td>"+
-									"<td>"+ data[0].partakerMail +"</td>"+
-									"<td>"+ data[0].partakerPhone +"</td>"+
-									"<td>"+ data[0].partakerAddress+"</td>"+
+									"<td class = 'nameColumn iterator' data-prepartaker-name='"+ response[0].partakerName +"'>"+ response[0].partakerName +"</td>"+
+									"<td>"+ response[0].partakerMail +"</td>"+
+									"<td><button class='btn  btn-success' type='button'>Validar</button></td>"+
+									"<td><button class='btn  btn-warning' type='button'>Modificar</button></td>"+
+									"<td><button class='btn  btn-danger' type='button'>Eliminar</button></td>"+
 									"</tr>");
 		$('#prepartakersTable').append(trToAppend);
 
-  	for( i = 1;i < data.length;i++){
+  	for( i = 1;i < response.length;i++){
 			trToAppend = $("<tr>"+
-										"<td class = 'nameColumn' data-prepartaker-name='"+ data[i].partakerName +"'>"+ data[i].partakerName +"</td>"+
-										"<td>"+ data[i].partakerMail +"</td>"+
-										"<td>"+ data[i].partakerPhone +"</td>"+
-										"<td>"+ data[i].partakerAddress+"</td>"+
+										"<td class = 'nameColumn' data-prepartaker-name='"+ response[i].partakerName +"'>"+ response[i].partakerName +"</td>"+
+										"<td>"+ response[i].partakerMail +"</td>"+
+										"<td><button class='btn  btn-success' type='button'>Validar</button></td>"+
+										"<td><button class='btn  btn-warning' type='button'>Modificar</button></td>"+
+										"<td><button class='btn  btn-danger' type='button'>Eliminar</button></td>"+
 										"</tr>");
 			$('#prepartakersTable').append(trToAppend);
   	}
 	});
-})
+});

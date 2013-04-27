@@ -11,12 +11,6 @@ block content
 						h4	Pre-registros
 					li.active(data-li-name="list")
 						a()	Lista
-					li(data-li-name="search")
-						a()	Buscar
-					li(data-li-name="validate")
-						a()	Validar
-					li(data-li-name="delete")
-						a()	Eliminar
 			.span9
 				.container#list
 					h2.text-center	Pre-registros
@@ -29,27 +23,11 @@ block content
 							td
 								h3	E-mail
 							td
-								h3	Teléfono
 							td
-								h3	Dirección
-				.container.hidden#search
-					h2.text-center	Buscar
-					form(action='#')
-						input(id='name',
-							name='name',
-							type='text',
-							placeholder='Nombre').required
-						button(type='submit')
-								i.icon-lock.icon-white
-								| &nbsp; Iniciar sesión
-				.container.hidden#validate
-					h2.text-center	Validar
-					table.table.table-hover
-						.hero-unit
-							h1	Who are you going to register?
-				.container.hidden#delete
-					h2.text-center	Eliminar
-					table.table.table-hover
-						.hero-unit
-							h1	Who are you going to register?
+							td
+					.container#prepartakersAdicionalInfoContainer
+						button.btn.btn-mini.btn-danger.pull-right	X
+						hr
+						.container.text-center#modifyFormContainer
+
 block exclusive-scripts
