@@ -46,17 +46,75 @@ function prepartakersTableFilter(){
 	}
 }
 
-function buttonValidate(){
-	var name = $(this).closest('tr').find('.nameColumn').data('prepartaker-name');
+function buttonValidate(event){
+	event.preventDefault();
+	$('#modifyFormContainer').hide();
+	$('#validateFormContainer').show();
+	$('#deleteFormContainer').hide();
+	$('#prepartakersAdicionalInfoContainer').hide();
 	$('#prepartakersAdicionalInfoContainer').fadeIn();
+	$('#validateFormContainer').children().remove();
+
+	var name = $(this).closest('tr').find('.nameColumn').data('prepartaker-name');
+	$.post('searchPrepartaker',  {name: name} ,function(response) {
+		var form = $('<div class="span5 alert alert-success">'+
+									'<ul class="nav nav-list">'+
+										'<li><h4>'+response[0].partakerName+'</h4></li>'+
+										'<li><h4>'+response[0].partakerMail+'</h4></li>'+
+										'<li><h4>'+response[0].partakerPhone+'</h4></li>'+
+										'<li><h4>'+response[0].partakerAddress+'</h4></li>'+
+									'</ul>'+
+								'</div>'+
+								'<div class="span6">'+
+									'<form action="/validatePrepartaker" method="POST" id="validatePrepartaker" class="form-horizontal">'+
+										'<div class="control-group">'+
+											'<label for="user" class="control-label pull-right"> Usuario</label>'+
+											'<div class="controls">'+
+												'<input type="text" id="user" name="user" required="required" class="input-large">'+
+											'</div>'+
+										'</div>'+
+										'<div class="control-group">'+
+											 '<label for="password" class="control-label">  Contraseña</label>'+
+											'<div class="controls">'+
+												'<input type="password" id="password" name="password" required="required" class="input-large">'+
+											'</div>'+
+										'</div>'+
+										//PasswordConfirmation
+										/*'<div class="control-group">'+
+											 '<label for="passwordConfirmation" class="control-label">  Confimar contraseña</label>'+
+											'<div class="controls">'+
+												'<input type="password" id="passwordConfirmation" name="passwordConfirmation" required="required" class="input-large">'+
+											'</div>'+
+										'</div>'+*/
+										'<div class="control-group">'+
+											 '<label for="folio" class="control-label">  Folio</label>'+
+											'<div class="controls">'+
+												'<input type="text" id="folio" name="folio" required="required" class="input-large">'+
+											'</div>'+
+										'</div>'+
+										'<input class="hidden" type="text" name="partakerId" id="partakerId" value="'+ response[0].partakerId +'">'+
+										'<button type="submit" class="btn btn-success btn-large btn-block">  Validar</button>'+
+									'</form>'+
+								'</div>');
+		$('#validateFormContainer').append(form);
+		if(response[0].validateFlag != 0){
+			var yaRegistrado = $('<div class="hero-unit text-center"><h3>Asistente ya validad@</h3></div>')
+			$('#validateFormContainer').find('.span6').children().remove();
+			$('#validateFormContainer').find('.span6').append(yaRegistrado);
+		}
+	});
 }
 
 function buttonModify(event){
 	event.preventDefault();
-	var name = $(this).closest('tr').find('.nameColumn').data('prepartaker-name');
+	$('#modifyFormContainer').show();
+	$('#validateFormContainer').hide();
+	$('#deleteFormContainer').hide();
 	$('#prepartakersAdicionalInfoContainer').hide();
 	$('#prepartakersAdicionalInfoContainer').fadeIn();
 	$('#modifyFormContainer').children().remove();
+
+	var name = $(this).closest('tr').find('.nameColumn').data('prepartaker-name');
 	$.post('searchPrepartaker',  {name: name} ,function(response) {
 		var form = $('<form action="/modifyPrepartaker" method="POST" id="modifyForm" class="form-horizontal">'+
 									'<div class="control-group">'+
@@ -91,8 +149,29 @@ function buttonModify(event){
 }
 
 function buttonDelete(){
-	var name = $(this).closest('tr').find('.nameColumn').data('prepartaker-name');
+	event.preventDefault();
+	$('#modifyFormContainer').hide();
+	$('#validateFormContainer').hide();
+	$('#deleteFormContainer').show();
+	$('#prepartakersAdicionalInfoContainer').hide();
 	$('#prepartakersAdicionalInfoContainer').fadeIn();
+	$('#deleteFormContainer').children().remove();
+
+	var name = $(this).closest('tr').find('.nameColumn').data('prepartaker-name');
+	$.post('searchPrepartaker',  {name: name} ,function(response) {
+		var form = $('<form action="/deletePrepartaker" method="POST" id="deleteForm" class="form-horizontal">'+
+									'<h2>	Confirmar la eliminación de:</h2>'+
+									'<h3><em>'+ response[0].partakerName +'</h3></em>'+
+									'<input class="hidden" type="text" name="partakerId" id="partakerId" value="'+ response[0].partakerId +'">'+
+									'<input class="hidden" type="text" name="validateFlag" id="validateFlag" value="'+ response[0].validateFlag +'">'+
+									'<button type="submit" class="btn btn-danger btn-large btn-block">  Eliminar</button>'+
+								'</form>');
+		$('#deleteFormContainer').append(form);
+		if(response[0].validateFlag != 0){
+			var alertaUsuarioValidado = $('<div class="alert alert-error">Alerta, este asistente ya está validado, será eliminado de ambas listas</div>')
+			$('#deleteFormContainer').find('h2:first').before(alertaUsuarioValidado);
+		}
+	});
 }
 
 function hideAddicionalPanel(){
@@ -106,7 +185,11 @@ $(document).ready(function(){
 	$('#prepartakersTable').on('click','.btn-warning',buttonModify);
 	$('#prepartakersTable').on('click','.btn-danger',buttonDelete);
 	$('#prepartakersAdicionalInfoContainer').on('click','.btn-mini',hideAddicionalPanel);
-	
+	$('#prepartakersAdicionalInfoContainer').hide();
+	$('#modifyFormContainer').hide();
+	$('#validateFormContainer').hide();
+	$('#deleteFormContainer').hide();
+
 	$.post('getPrepartakersTable',function(response) {
 		var trToAppend;
 		trToAppend = $("<tr>"+

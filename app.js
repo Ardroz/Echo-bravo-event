@@ -16,10 +16,10 @@ var aesKey			= 'c!A=wq(0c&yw@3w',
 	eventsTable		= 'events',
 	eventName			= 'evento',
 	eventId				= '0000000001',
-	prePartakersTable = 'prePartakers' + eventId,
-	partakersTable 		= 'partakers' + eventId,
-	echosTable				= 'echos'	+ eventId,
-	messagesTable 		= 'messages' + eventId;
+	prePartakersTable = 'prePartakers',
+	partakersTable 		= 'partakers',
+	echosTable				= 'echos',
+	messagesTable 		= 'messages';
 
 var httpsStuff = {
     key: fs.readFileSync('./privatekey.pem'),
@@ -112,7 +112,7 @@ var auth = function(req, res){
 var getPrepartakersTable = function(req, res){
   var database = new databaseInstance();
 
-  var selectAllPrepartakersQuery = 'SELECT * FROM ' + databaseName + '.prepartakers';
+  var selectAllPrepartakersQuery = 'SELECT * FROM ' + databaseName + '.'+prePartakersTable;
 
   database.query(selectAllPrepartakersQuery, function(error, result, row){
     if(!error) {
@@ -125,7 +125,7 @@ var getPrepartakersTable = function(req, res){
 
 var searchPrepartaker = function(req, res){
   var database = new databaseInstance();
-  var searchPrepartakerQuery =  'SELECT * FROM ' + databaseName + '.prepartakers ' + 'WHERE partakerName = "' + req.body.name + '"';
+  var searchPrepartakerQuery =  'SELECT * FROM ' + databaseName + '.'+prePartakersTable + ' WHERE partakerName = "' + req.body.name + '"';
 
   database.query(searchPrepartakerQuery, function(error, result, row){
     if(!error) {
@@ -137,18 +137,17 @@ var searchPrepartaker = function(req, res){
 }
 
 var modifyPrepartaker = function(req, res){
-  var database = new databaseInstance();
-  var newName = req.body.name;
-  var newMail = req.body.mail;
-  var newPhone = req.body.phone;
-  var newAddress = req.body.address;
-  var name = req.body.nameToChange;
-
-  var updatePrepartakerQuery =  'UPDATE  '+databaseName+'.prepartakers SET '+
+  var database = new databaseInstance(),
+      newName = req.body.name,
+      newMail = req.body.mail,
+      newPhone = req.body.phone,
+      newAddress = req.body.address,
+      name = req.body.nameToChange,
+      updatePrepartakerQuery =  'UPDATE  '+ databaseName + '.'+prePartakersTable+' SET '+
                                 'partakerName = "' +newName+'",'+
                                 'partakerMail = "' +newMail+'",'+
                                 'partakerPhone = "' +newPhone+'",'+
-                                'partakerAddress = "' +newAddress+'" WHERE partakerName = "' + name + '"'; 
+                                'partakerAddress = "' +newAddress+'" WHERE partakerName = "' + name + '"';
 
   database.query(updatePrepartakerQuery, function(error, result, row){
     if(!error) {
@@ -159,11 +158,85 @@ var modifyPrepartaker = function(req, res){
   });
 }
 
+var validatePrepartaker =  function(req, res){
+	var database = new databaseInstance(),
+			user = req.body.user,
+			password = req.body.password,
+			folio = req.body.folio,
+			partakerId = req.body.partakerId,
+			updatePrepartakerFlagQuery =  'UPDATE  '+ databaseName + '.'+prePartakersTable+' SET '+
+																		'validateFlag = 1 WHERE partakerId = "' + partakerId + '"',
+			insertNewPartakerQuery= 'INSERT INTO  '+ databaseName + '.'+partakersTable+' ('+
+															'partakerId,partakerUser,partakerPassword,partakerBaucher) VALUES('+
+															'"'+partakerId+'",'+'"'+user+'",'+'"'+password+'",'+'"'+folio+'")';
+
+	database.query(updatePrepartakerFlagQuery, function(error, result, row){
+		if(!error) {
+			database.query(insertNewPartakerQuery, function(error, result, row){
+				if(!error) {
+					res.redirect('/organiserPanel');
+				}else{
+					console.log('Error insertNewPartakerQuery');
+				}
+			});
+		}else{
+			console.log('Error validatePrepartaker');
+		}
+	});
+}
+
+var deletePrepartaker =  function(req, res){
+	var database = new databaseInstance(),
+			partakerId = req.body.partakerId,
+			validateFlag = req.body.validateFlag,
+			deletePrepartakerQuery = 'DELETE FROM '+databaseName+'.'+prePartakersTable+' WHERE partakerId ='+partakerId,
+			deletePartakerQuery = 'DELETE FROM '+databaseName+'.'+partakersTable+' WHERE partakerId ='+partakerId;
+
+	database.query(deletePrepartakerQuery, function(error, result, row){
+		if(!error) {
+			if(validateFlag != 0){
+				database.query(deletePartakerQuery, function(error, result, row){
+					if(!error) {
+						res.redirect('/organiserPanel');
+					}else{
+						console.log('Error deletePartakerQuery');
+					}
+				});
+			}else{
+				res.redirect('/organiserPanel');
+			}
+		}else{
+			console.log('Error deletePrepartakerQuery');
+		}
+	});
+}
+
+var insertPrepartaker =  function(req, res){
+	var database = new databaseInstance(),
+			name = req.body.name,
+			mail = req.body.mail,
+			phone = req.body.phone,
+			address = req.body.address;
+			insertNewPrepartakerQuery= 'INSERT INTO  '+ databaseName + '.'+prePartakersTable+' ('+
+															'partakerId,eventId,partakerName,partakerMail,partakerPhone,partakerAddress,validateFlag) VALUES('+
+															'NULL ,"'+eventId+'",'+'"'+name+'",'+'"'+mail+'",'+'"'+phone+'",'+'"'+address+'",0)';
+	database.query(insertNewPrepartakerQuery, function(error, result, row){
+		if(!error) {
+			res.redirect('/organiserPanel');
+		}else{
+			console.log('Error insertPrepartaker');
+		}
+	});
+}
+
 //POST pages
 app.post('/auth', auth);
 app.post('/getPrepartakersTable', getPrepartakersTable);
-app.post('/searchPrepartaker', searchPrepartaker);
+app.post('/deletePrepartaker', deletePrepartaker);
+app.post('/insertPrepartaker', insertPrepartaker);
 app.post('/modifyPrepartaker', modifyPrepartaker);
+app.post('/searchPrepartaker', searchPrepartaker);
+app.post('/validatePrepartaker', validatePrepartaker);
 
 https.createServer(httpsStuff, app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

@@ -11,6 +11,8 @@ block content
 						h4	Pre-registros
 					li.active(data-li-name="list")
 						a()	Lista
+					li(data-li-name="newPrepartaker")
+						a()	Registrar
 			.span9
 				.container#list
 					h2.text-center	Pre-registros
@@ -22,12 +24,36 @@ block content
 								h3	Nombre
 							td
 								h3	E-mail
-							td
+							td	
 							td
 							td
 					.container#prepartakersAdicionalInfoContainer
 						button.btn.btn-mini.btn-danger.pull-right	X
 						hr
 						.container.text-center#modifyFormContainer
+						.row-fluid#validateFormContainer
+						.container.text-center#deleteFormContainer
+				.container.text-center.hidden#newPrepartaker
+					h2.text-center	Registrar asistente
+					hr
+					form.form-horizontal(action='/insertPrepartaker',method='POST')
+						.control-group
+							label.control-label(for='inputName')	Nombre
+							.controls
+								input.input-large(type='text', id='name', name='name', placeholder="Nombre", required='required')
+						.control-group
+							label.control-label(for='inputMail')	Correo
+							.controls
+								input.input-large(type='email', id='mail', name='mail', placeholder="Correo", required='required')
+						.control-group
+							label.control-label(for='inputPhone')	Teléfono
+							.controls
+								input.input-large(type='number', id='phone', name='phone', placeholder="Teléfono", required='required')
+						.control-group
+							label.control-label(for='inputAddress')	Direccion
+							.controls
+								input.input-large(type='text', id='address', name='address', placeholder="Dirección", required='required')
+						button.btn.btn-large.btn-block.btn-info	Enviar
+
 
 block exclusive-scripts
