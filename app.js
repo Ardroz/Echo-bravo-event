@@ -121,7 +121,7 @@ var getPrepartakersTable = function(req, res){
       console.log('Error selectAllPrepartakersQuery');
     }
   });
-}
+};
 
 var deletePrepartaker =  function(req, res){
   var database = new databaseInstance(),
@@ -132,7 +132,7 @@ var deletePrepartaker =  function(req, res){
 
   database.query(deletePrepartakerQuery, function(error, result, row){
     if(!error) {
-      if(validateFlag != 0){
+      if(validateFlag !== 0){
         database.query(deletePartakerQuery, function(error, result, row){
           if(!error) {
             res.redirect('/organiserPanel');
@@ -147,13 +147,13 @@ var deletePrepartaker =  function(req, res){
       console.log('Error deletePrepartakerQuery');
     }
   });
-}
+};
 
 var insertPrepartaker =  function(req, res){
   var database = new databaseInstance(),
       name = req.body.name.replace(/['"<>+-=]/ig,""),
       mail = req.body.mail.replace(/['"<>+-=]/ig,""),
-      phone = req.body.phone.replace(/['"<>+-=]/ig,""),
+      phone = req.body.phone,
       address = req.body.address.replace(/['"<>+-=]/ig,"");
       insertNewPrepartakerQuery= 'INSERT INTO  '+ databaseName + '.'+prePartakersTable+' ('+
                               'partakerId,eventId,partakerName,partakerMail,partakerPhone,partakerAddress,validateFlag) VALUES('+
@@ -166,14 +166,13 @@ var insertPrepartaker =  function(req, res){
 			console.log('Error insertPrepartaker');
 		}
 	});
-
-}
+};
 
 var modifyPrepartaker = function(req, res){
   var database = new databaseInstance(),
       newName = req.body.name.replace(/['"<>+-=]/ig,""),
       newMail = req.body.mail.replace(/['"<>+-=]/ig,""),
-      newPhone = req.body.phone.replace(/['"<>+-=]/ig,""),
+      newPhone = req.body.phone,
       newAddress = req.body.address.replace(/['"<>+-=]/ig,""),
       name = req.body.nameToChange,
       updatePrepartakerQuery =  'UPDATE  '+ databaseName + '.'+prePartakersTable+' SET '+
@@ -189,7 +188,7 @@ var modifyPrepartaker = function(req, res){
       console.log('Error selectAllPrepartakersQuery');
     }
   });
-}
+};
 
 var searchPrepartaker = function(req, res){
   var database = new databaseInstance();
@@ -202,11 +201,11 @@ var searchPrepartaker = function(req, res){
       console.log('Error selectAllPrepartakersQuery');
     }
   });
-}
+};
 
 var validatePrepartaker =  function(req, res){
 	var database = new databaseInstance(),
-			user = req.body.user,
+			user = req.body.user.replace(/['"<>+-=]/ig,""),
 			password = req.body.password,
 			folio = req.body.folio,
 			partakerId = req.body.partakerId,
@@ -229,7 +228,7 @@ var validatePrepartaker =  function(req, res){
 			console.log('Error validatePrepartaker');
 		}
 	});
-}
+};
 
 
 //POST pages

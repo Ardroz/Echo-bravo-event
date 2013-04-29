@@ -19,7 +19,7 @@ function prepartakersTableFilter(){
 			pattern=new RegExp(text),
 			i = 2;
 
-	if(text == ''){
+	if(text === ''){
 		$('.nameColumn').parent().slideDown();
 	}else{
 		if(pattern.test(name)){
@@ -39,7 +39,7 @@ function prepartakersTableFilter(){
 			}
 			$('.nameColumn').filter('.iterator').parent().next().children(':first-child').addClass('iterator');
 			$('.nameColumn').filter('.iterator:first').removeClass('iterator');
-		};
+		}
 
 		$('.nameColumn').filter('.iterator').removeClass('iterator');
 		$('.nameColumn:first').addClass('iterator');
@@ -74,20 +74,20 @@ function buttonValidate(event){
 											'</div>'+
 										'</div>'+
 										'<div class="control-group">'+
-											 '<label for="password" class="control-label">  Contraseña</label>'+
+											'<label for="password" class="control-label">  Contraseña</label>'+
 											'<div class="controls">'+
 												'<input type="password" id="password" name="password" required="required" class="input-large">'+
 											'</div>'+
 										'</div>'+
 										//PasswordConfirmation
 										/*'<div class="control-group">'+
-											 '<label for="passwordConfirmation" class="control-label">  Confimar contraseña</label>'+
+											'<label for="passwordConfirmation" class="control-label">  Confimar contraseña</label>'+
 											'<div class="controls">'+
 												'<input type="password" id="passwordConfirmation" name="passwordConfirmation" required="required" class="input-large">'+
 											'</div>'+
 										'</div>'+*/
 										'<div class="control-group">'+
-											 '<label for="folio" class="control-label">  Folio</label>'+
+											'<label for="folio" class="control-label">  Folio</label>'+
 											'<div class="controls">'+
 												'<input type="text" id="folio" name="folio" required="required" class="input-large">'+
 											'</div>'+
@@ -97,13 +97,45 @@ function buttonValidate(event){
 									'</form>'+
 								'</div>');
 		$('#validateFormContainer').append(form);
-		if(response[0].validateFlag != 0){
-			var yaRegistrado = $('<div class="hero-unit text-center"><h3>Asistente ya validad@</h3></div>')
+		if(response[0].validateFlag !== 0){
+			var yaRegistrado = $('<div class="hero-unit text-center"><h3>Asistente ya validad@</h3></div>');
 			$('#validateFormContainer').find('.span6').children().remove();
 			$('#validateFormContainer').find('.span6').append(yaRegistrado);
 		}
 	});
 }
+
+function postButtonModify(response) {
+	var form = $('<form action="/modifyPrepartaker" method="POST" id="modifyForm" class="form-horizontal">'+
+								'<div class="control-group">'+
+									'<label for="name" class="control-label pull-right"> Nombre</label>'+
+									'<div class="controls">'+
+										'<input type="text" id="name" name="name" required="required" class="input-large" value="'+response[0].partakerName+'">'+
+									'</div>'+
+								'</div>'+
+								'<div class="control-group">'+
+									'<label for="mail" class="control-label">  Correo</label>'+
+									'<div class="controls">'+
+										'<input type="email" id="mail" name="mail" required="required" class="input-large" value="'+response[0].partakerMail+'">'+
+									'</div>'+
+								'</div>'+
+								'<div class="control-group">'+
+									'<label for="phone" class="control-label">  Teléfono</label>'+
+									'<div class="controls">'+
+										'<input type="number" id="phone" name="phone" required="required" class="input-large" value="'+response[0].partakerPhone+'">'+
+									'</div>'+
+								'</div>'+
+								'<div class="control-group">'+
+									'<label for="address" class="control-label">  Dirección</label>'+
+									'<div class="controls">'+
+										'<input type="text" id="address" name="address" required="required" class="input-large" value="'+response[0].partakerAddress+'">'+
+									'</div>'+
+								'</div>'+ 
+								'<input class="hidden" type="text" name="nameToChange" id="nameToChange" value="'+ response[0].partakerName +'">'+
+								'<button type="submit" class="btn btn-warning btn-large btn-block">  Modificar</button>'+
+							'</form>');
+	$('#modifyFormContainer').append(form);
+	}
 
 function buttonModify(event){
 	event.preventDefault();
@@ -114,38 +146,9 @@ function buttonModify(event){
 	$('#prepartakersAdicionalInfoContainer').fadeIn();
 	$('#modifyFormContainer').children().remove();
 
+
 	var name = $(this).closest('tr').find('.nameColumn').data('prepartaker-name');
-	$.post('searchPrepartaker',  {name: name} ,function(response) {
-		var form = $('<form action="/modifyPrepartaker" method="POST" id="modifyForm" class="form-horizontal">'+
-									'<div class="control-group">'+
-										'<label for="name" class="control-label pull-right"> Nombre</label>'+
-										'<div class="controls">'+
-											'<input type="text" id="name" name="name" required="required" class="input-large" value="'+response[0].partakerName+'">'+
-										'</div>'+
-									'</div>'+
-									'<div class="control-group">'+
-										 '<label for="mail" class="control-label">  Correo</label>'+
-										'<div class="controls">'+
-											'<input type="email" id="mail" name="mail" required="required" class="input-large" value="'+response[0].partakerMail+'">'+
-										'</div>'+
-									'</div>'+
-									'<div class="control-group">'+
-										 '<label for="phone" class="control-label">  Teléfono</label>'+
-										'<div class="controls">'+
-											'<input type="number" id="phone" name="phone" required="required" class="input-large" value="'+response[0].partakerPhone+'">'+
-										'</div>'+
-									'</div>'+
-									'<div class="control-group">'+
-										 '<label for="address" class="control-label">  Dirección</label>'+
-										'<div class="controls">'+
-											'<input type="text" id="address" name="address" required="required" class="input-large" value="'+response[0].partakerAddress+'">'+
-										'</div>'+
-									'</div>'+ 
-									'<input class="hidden" type="text" name="nameToChange" id="nameToChange" value="'+ response[0].partakerName +'">'+
-									'<button type="submit" class="btn btn-warning btn-large btn-block">  Modificar</button>'+
-								'</form>');
-		$('#modifyFormContainer').append(form);
-	});
+	$.post('searchPrepartaker',  {name: name} , postButtonModify);
 }
 
 function buttonDelete(){
@@ -167,8 +170,8 @@ function buttonDelete(){
 									'<button type="submit" class="btn btn-danger btn-large btn-block">  Eliminar</button>'+
 								'</form>');
 		$('#deleteFormContainer').append(form);
-		if(response[0].validateFlag != 0){
-			var alertaUsuarioValidado = $('<div class="alert alert-error">Alerta, este asistente ya está validado, será eliminado de ambas listas</div>')
+		if(response[0].validateFlag !== 0){
+			var alertaUsuarioValidado = $('<div class="alert alert-error">Alerta, este asistente ya está validado, será eliminado de ambas listas</div>');
 			$('#deleteFormContainer').find('h2:first').before(alertaUsuarioValidado);
 		}
 	});
@@ -178,13 +181,15 @@ function hideAddicionalPanel(){
 	$(this).parent().fadeOut();
 }
 
-$(document).ready(function(){
+function start(){
 	$('.sidebar').on('click','li',changeContainerPanel);
 	$('#prepartakersFilterForm').on('keyup','.prepartakersFilter',prepartakersTableFilter);	
 	$('#prepartakersTable').on('click','.btn-success',buttonValidate);
 	$('#prepartakersTable').on('click','.btn-warning',buttonModify);
 	$('#prepartakersTable').on('click','.btn-danger',buttonDelete);
 	$('#prepartakersAdicionalInfoContainer').on('click','.btn-mini',hideAddicionalPanel);
+
+	//Hide all the stuff that shouldn't be shown at first 
 	$('#prepartakersAdicionalInfoContainer').hide();
 	$('#modifyFormContainer').hide();
 	$('#validateFormContainer').hide();
@@ -201,7 +206,7 @@ $(document).ready(function(){
 									"</tr>");
 		$('#prepartakersTable').append(trToAppend);
 
-  	for( i = 1;i < response.length;i++){
+		for( i = 1;i < response.length;i++){
 			trToAppend = $("<tr>"+
 										"<td class = 'nameColumn' data-prepartaker-name='"+ response[i].partakerName +"'>"+ response[i].partakerName +"</td>"+
 										"<td>"+ response[i].partakerMail +"</td>"+
@@ -210,6 +215,8 @@ $(document).ready(function(){
 										"<td><button class='btn  btn-danger' type='button'>Eliminar</button></td>"+
 										"</tr>");
 			$('#prepartakersTable').append(trToAppend);
-  	}
+		}
 	});
-});
+}
+
+$(document).on('ready', start);
