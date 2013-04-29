@@ -62,7 +62,7 @@ function login(req, res, next){
 	if(req.session.user){
 		next();
 		}else{
-    res.redirect('/');
+    res.redirect('/organiserLogin');
   }
 }
 
@@ -123,25 +123,58 @@ var getPrepartakersTable = function(req, res){
   });
 }
 
-var searchPrepartaker = function(req, res){
-  var database = new databaseInstance();
-  var searchPrepartakerQuery =  'SELECT * FROM ' + databaseName + '.'+prePartakersTable + ' WHERE partakerName = "' + req.body.name + '"';
+var deletePrepartaker =  function(req, res){
+  var database = new databaseInstance(),
+      partakerId = req.body.partakerId,
+      validateFlag = req.body.validateFlag,
+      deletePrepartakerQuery = 'DELETE FROM '+databaseName+'.'+prePartakersTable+' WHERE partakerId ='+partakerId,
+      deletePartakerQuery = 'DELETE FROM '+databaseName+'.'+partakersTable+' WHERE partakerId ='+partakerId;
 
-  database.query(searchPrepartakerQuery, function(error, result, row){
+  database.query(deletePrepartakerQuery, function(error, result, row){
     if(!error) {
-      res.send(result);
+      if(validateFlag != 0){
+        database.query(deletePartakerQuery, function(error, result, row){
+          if(!error) {
+            res.redirect('/organiserPanel');
+          }else{
+            console.log('Error deletePartakerQuery');
+          }
+        });
+      }else{
+        res.redirect('/organiserPanel');
+      }
     }else{
-      console.log('Error selectAllPrepartakersQuery');
+      console.log('Error deletePrepartakerQuery');
     }
   });
 }
 
+var insertPrepartaker =  function(req, res){
+  var database = new databaseInstance(),
+      name = req.body.name.replace(/['"<>+-=]/ig,""),
+      mail = req.body.mail.replace(/['"<>+-=]/ig,""),
+      phone = req.body.phone.replace(/['"<>+-=]/ig,""),
+      address = req.body.address.replace(/['"<>+-=]/ig,"");
+      insertNewPrepartakerQuery= 'INSERT INTO  '+ databaseName + '.'+prePartakersTable+' ('+
+                              'partakerId,eventId,partakerName,partakerMail,partakerPhone,partakerAddress,validateFlag) VALUES('+
+                              'NULL ,"'+eventId+'",'+'"'+name+'",'+'"'+mail+'",'+'"'+phone+'",'+'"'+address+'",0)';
+  console.log(name);
+	database.query(insertNewPrepartakerQuery, function(error, result, row){
+		if(!error) {
+			res.redirect('/organiserPanel');
+		}else{
+			console.log('Error insertPrepartaker');
+		}
+	});
+
+}
+
 var modifyPrepartaker = function(req, res){
   var database = new databaseInstance(),
-      newName = req.body.name,
-      newMail = req.body.mail,
-      newPhone = req.body.phone,
-      newAddress = req.body.address,
+      newName = req.body.name.replace(/['"<>+-=]/ig,""),
+      newMail = req.body.mail.replace(/['"<>+-=]/ig,""),
+      newPhone = req.body.phone.replace(/['"<>+-=]/ig,""),
+      newAddress = req.body.address.replace(/['"<>+-=]/ig,""),
       name = req.body.nameToChange,
       updatePrepartakerQuery =  'UPDATE  '+ databaseName + '.'+prePartakersTable+' SET '+
                                 'partakerName = "' +newName+'",'+
@@ -152,6 +185,19 @@ var modifyPrepartaker = function(req, res){
   database.query(updatePrepartakerQuery, function(error, result, row){
     if(!error) {
       res.redirect('/organiserPanel');
+    }else{
+      console.log('Error selectAllPrepartakersQuery');
+    }
+  });
+}
+
+var searchPrepartaker = function(req, res){
+  var database = new databaseInstance();
+  var searchPrepartakerQuery =  'SELECT * FROM ' + databaseName + '.'+prePartakersTable + ' WHERE partakerName = "' + req.body.name + '"';
+
+  database.query(searchPrepartakerQuery, function(error, result, row){
+    if(!error) {
+      res.send(result);
     }else{
       console.log('Error selectAllPrepartakersQuery');
     }
@@ -185,49 +231,6 @@ var validatePrepartaker =  function(req, res){
 	});
 }
 
-var deletePrepartaker =  function(req, res){
-	var database = new databaseInstance(),
-			partakerId = req.body.partakerId,
-			validateFlag = req.body.validateFlag,
-			deletePrepartakerQuery = 'DELETE FROM '+databaseName+'.'+prePartakersTable+' WHERE partakerId ='+partakerId,
-			deletePartakerQuery = 'DELETE FROM '+databaseName+'.'+partakersTable+' WHERE partakerId ='+partakerId;
-
-	database.query(deletePrepartakerQuery, function(error, result, row){
-		if(!error) {
-			if(validateFlag != 0){
-				database.query(deletePartakerQuery, function(error, result, row){
-					if(!error) {
-						res.redirect('/organiserPanel');
-					}else{
-						console.log('Error deletePartakerQuery');
-					}
-				});
-			}else{
-				res.redirect('/organiserPanel');
-			}
-		}else{
-			console.log('Error deletePrepartakerQuery');
-		}
-	});
-}
-
-var insertPrepartaker =  function(req, res){
-	var database = new databaseInstance(),
-			name = req.body.name,
-			mail = req.body.mail,
-			phone = req.body.phone,
-			address = req.body.address;
-			insertNewPrepartakerQuery= 'INSERT INTO  '+ databaseName + '.'+prePartakersTable+' ('+
-															'partakerId,eventId,partakerName,partakerMail,partakerPhone,partakerAddress,validateFlag) VALUES('+
-															'NULL ,"'+eventId+'",'+'"'+name+'",'+'"'+mail+'",'+'"'+phone+'",'+'"'+address+'",0)';
-	database.query(insertNewPrepartakerQuery, function(error, result, row){
-		if(!error) {
-			res.redirect('/organiserPanel');
-		}else{
-			console.log('Error insertPrepartaker');
-		}
-	});
-}
 
 //POST pages
 app.post('/auth', auth);
