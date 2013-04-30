@@ -17,9 +17,9 @@ var aesKey			= 'c!A=wq(0c&yw@3w',
 	eventName			= 'evento',
 	eventId				= '0000000001',
 	prePartakersTable = 'prePartakers',
-	partakersTable 		= 'partakers',
+	partakersTable= 'partakers',
 	echosTable				= 'echos',
-	messagesTable 		= 'messages';
+	messagesTable	= 'messages';
 
 var httpsStuff = {
     key: fs.readFileSync('./privatekey.pem'),
@@ -69,7 +69,7 @@ function login(req, res, next){
 //GET pages
 app.get('/', routes.index);
 app.get('/users', user.list);
-app.get('/organiserPanel', routes.organiserPanel);
+app.get('/organiserPanel',login, routes.organiserPanel);
 app.get('/organiserPanelRecords', login, routes.organiserPanelRecords);
 app.get('/organiserPanelMessages', login, routes.organiserPanelMessages);
 app.get('/organiserPanelEchos', login, routes.organiserPanelEchos);
@@ -151,10 +151,10 @@ var deletePrepartaker =  function(req, res){
 
 var insertPrepartaker =  function(req, res){
   var database = new databaseInstance(),
-      name = req.body.name.replace(/['"<>+-=]/ig,""),
-      mail = req.body.mail.replace(/['"<>+-=]/ig,""),
+      name = req.body.name.replace(/['"<>=]/,""),
+      mail = req.body.mail.replace(/['"<>=]/,""),
       phone = req.body.phone,
-      address = req.body.address.replace(/['"<>+-=]/ig,"");
+      address = req.body.address.replace(/['"<>=]/,"");
       insertNewPrepartakerQuery= 'INSERT INTO  '+ databaseName + '.'+prePartakersTable+' ('+
                               'partakerId,eventId,partakerName,partakerMail,partakerPhone,partakerAddress,validateFlag) VALUES('+
                               'NULL ,"'+eventId+'",'+'"'+name+'",'+'"'+mail+'",'+'"'+phone+'",'+'"'+address+'",0)';
@@ -170,10 +170,10 @@ var insertPrepartaker =  function(req, res){
 
 var modifyPrepartaker = function(req, res){
   var database = new databaseInstance(),
-      newName = req.body.name.replace(/['"<>+-=]/ig,""),
-      newMail = req.body.mail.replace(/['"<>+-=]/ig,""),
+      newName = req.body.name.replace(/['"<>=]/,""),
+      newMail = req.body.mail.replace(/['"<>=]/,""),
       newPhone = req.body.phone,
-      newAddress = req.body.address.replace(/['"<>+-=]/ig,""),
+      newAddress = req.body.address.replace(/['"<>=]/,""),
       name = req.body.nameToChange,
       updatePrepartakerQuery =  'UPDATE  '+ databaseName + '.'+prePartakersTable+' SET '+
                                 'partakerName = "' +newName+'",'+
@@ -205,9 +205,9 @@ var searchPrepartaker = function(req, res){
 
 var validatePrepartaker =  function(req, res){
 	var database = new databaseInstance(),
-			user = req.body.user.replace(/['"<>+-=]/ig,""),
+			user = req.body.user.replace(/['"<>=]/,""),
 			password = req.body.password,
-			folio = req.body.folio,
+			folio = req.body.folio.replace(/['"<>=]/,""),
 			partakerId = req.body.partakerId,
 			updatePrepartakerFlagQuery =  'UPDATE  '+ databaseName + '.'+prePartakersTable+' SET '+
 																		'validateFlag = 1 WHERE partakerId = "' + partakerId + '"',
