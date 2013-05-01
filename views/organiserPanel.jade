@@ -16,7 +16,7 @@ block content
 			.span9
 				.container#list
 					h2.text-center	Pre-registros
-					form.form-search.text-right#prepartakersFilterForm
+					form.form-search.text-right#filterForm
 						input.input-medium.search-query.prepartakersFilter(type='text')	
 					table.table.table-hover#prepartakersTable
 						tr
@@ -27,7 +27,7 @@ block content
 							td	
 							td
 							td
-					.container#prepartakersAdicionalInfoContainer
+					.container#adicionalInfoContainer
 						button.btn.btn-mini.btn-danger.pull-right	X
 						hr
 						.container.text-center#modifyFormContainer
@@ -41,6 +41,16 @@ block content
 							label.control-label(for='inputName')	Nombre
 							.controls
 								input.input-large(type='text', id='name', name='name', placeholder="Nombre", required='required')
+						.control-group
+							label.control-label(for='inputAge')	Edad
+							.controls
+								input.input-large(type='number', id='age', name='age', placeholder="Edad", required='required', min=5,max=99)
+						.control-group
+							label.control-label(for='inputGender')	Género
+							.controls
+								select(id='gender', name='gender')
+									option	Masculino
+									option	Femenino
 						.control-group
 							label.control-label(for='inputMail')	Correo
 							.controls

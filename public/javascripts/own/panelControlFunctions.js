@@ -11,7 +11,7 @@ function changeContainerPanel(event){
 	$(this).addClass('active');
 }
 
-function prepartakersTableFilter(){
+function tableFilter(){
 	var iteratorRow = $('.nameColumn').filter('.iterator').parent(),
 			name = $('.nameColumn').filter('.iterator').data('prepartaker-name').toLowerCase(),
 			text = $(this).val().toLowerCase(),
@@ -45,26 +45,30 @@ function prepartakersTableFilter(){
 		$('.nameColumn:first').addClass('iterator');
 	}
 }
-
-function buttonValidate(event){
+/*
+	All the button and post functions for Prepartakers
+*/
+function buttonValidatePrepartakers(event){
 	event.preventDefault();
 	$('#modifyFormContainer').hide();
 	$('#validateFormContainer').show();
 	$('#deleteFormContainer').hide();
-	$('#prepartakersAdicionalInfoContainer').hide();
-	$('#prepartakersAdicionalInfoContainer').fadeIn();
+	$('#adicionalInfoContainer').hide();
+	$('#adicionalInfoContainer').fadeIn();
 	$('#validateFormContainer').children().remove();
 
-	var name = $(this).closest('tr').find('.nameColumn').data('prepartaker-name');
-	$.post('searchPrepartaker',  {name: name} , postButtonValidate);
+	var id = $(this).closest('tr').find('.nameColumn').data('prepartaker-id');
+	$.post('searchPrepartaker',  {id: id} , postButtonValidatePrepartakers);
 }
 
-function postButtonValidate(response){
+function postButtonValidatePrepartakers(response){
 	var form = $('<div class="span5 alert alert-success">'+
 								'<ul class="nav nav-list">'+
-									'<li><h4>'+response[0].partakerName+'</h4></li>'+
-									'<li><h4>'+response[0].partakerMail+'</h4></li>'+
-									'<li><h4>'+response[0].partakerPhone+'</h4></li>'+
+									'<li><h4>'+response[0].partakerName+'</h4></li><hr>'+
+									'<li><h4>'+response[0].partakerAge+'</h4></li><hr>'+
+									'<li><h4>'+response[0].partakerGender+'</h4></li><hr>'+
+									'<li><h4>'+response[0].partakerMail+'</h4></li><hr>'+
+									'<li><h4>'+response[0].partakerPhone+'</h4></li><hr>'+
 									'<li><h4>'+response[0].partakerAddress+'</h4></li>'+
 								'</ul>'+
 							'</div>'+
@@ -73,7 +77,7 @@ function postButtonValidate(response){
 									'<div class="control-group">'+
 										'<label for="user" class="control-label pull-right"> Usuario</label>'+
 										'<div class="controls">'+
-											'<input type="text" id="user" name="user" required="required" class="input-large">'+
+											'<input type="text" id="user" name="user" required="required" class="input-large" value='+response[0].partakerMail+'>'+
 										'</div>'+
 									'</div>'+
 									'<div class="control-group">'+
@@ -82,13 +86,6 @@ function postButtonValidate(response){
 											'<input type="password" id="password" name="password" required="required" class="input-large">'+
 										'</div>'+
 									'</div>'+
-									//PasswordConfirmation
-									/*'<div class="control-group">'+
-										'<label for="passwordConfirmation" class="control-label">  Confimar contraseña</label>'+
-										'<div class="controls">'+
-											'<input type="password" id="passwordConfirmation" name="passwordConfirmation" required="required" class="input-large">'+
-										'</div>'+
-									'</div>'+*/
 									'<div class="control-group">'+
 										'<label for="folio" class="control-label">  Folio</label>'+
 										'<div class="controls">'+
@@ -107,26 +104,40 @@ function postButtonValidate(response){
 	}
 }
 
-function buttonModify(event){
+function buttonModifyPrepartakers(event){
 	event.preventDefault();
 	$('#modifyFormContainer').show();
 	$('#validateFormContainer').hide();
 	$('#deleteFormContainer').hide();
-	$('#prepartakersAdicionalInfoContainer').hide();
-	$('#prepartakersAdicionalInfoContainer').fadeIn();
+	$('#adicionalInfoContainer').hide();
+	$('#adicionalInfoContainer').fadeIn();
 	$('#modifyFormContainer').children().remove();
 
-
-	var name = $(this).closest('tr').find('.nameColumn').data('prepartaker-name');
-	$.post('searchPrepartaker',  {name: name} , postButtonModify);
+	var id = $(this).closest('tr').find('.nameColumn').data('prepartaker-id');
+	$.post('searchPrepartaker',  {id: id} , postButtonModifyPrepartakers);
 }
 
-function postButtonModify(response) {
+function postButtonModifyPrepartakers(response) {
 	var form = $('<form action="/modifyPrepartaker" method="POST" id="modifyForm" class="form-horizontal">'+
 								'<div class="control-group">'+
 									'<label for="name" class="control-label pull-right"> Nombre</label>'+
 									'<div class="controls">'+
 										'<input type="text" id="name" name="name" required="required" class="input-large" value="'+response[0].partakerName+'">'+
+									'</div>'+
+								'</div>'+
+								'<div class="control-group">'+
+									'<label for="name" class="control-label pull-right"> Edad</label>'+
+									'<div class="controls">'+
+										'<input type="number" id="age" name="age" placeholder="Edad" required="required" min="5" max="99" class="input-large" value='+response[0].partakerAge+'>'+
+									'</div>'+
+								'</div>'+
+								'<div class="control-group">'+
+									'<label for="inputGender" class="control-label">	Género</label>'+
+									'<div class="controls">'+
+											'<select id="gender" name="gender">'+
+											'<option>	Masculino</option>'+
+											'<option>	Femenino</option>'+
+											'</select>'+
 									'</div>'+
 								'</div>'+
 								'<div class="control-group">'+
@@ -153,20 +164,20 @@ function postButtonModify(response) {
 	$('#modifyFormContainer').append(form);
 }
 
-function buttonDelete(event){
+function buttonDeletePrepartakers(event){
 	event.preventDefault();
 	$('#modifyFormContainer').hide();
 	$('#validateFormContainer').hide();
 	$('#deleteFormContainer').show();
-	$('#prepartakersAdicionalInfoContainer').hide();
-	$('#prepartakersAdicionalInfoContainer').fadeIn();
+	$('#adicionalInfoContainer').hide();
+	$('#adicionalInfoContainer').fadeIn();
 	$('#deleteFormContainer').children().remove();
 
-	var name = $(this).closest('tr').find('.nameColumn').data('prepartaker-name');
-	$.post('searchPrepartaker',  {name: name} ,postButtonDelete);
+	var id = $(this).closest('tr').find('.nameColumn').data('prepartaker-id');
+	$.post('searchPrepartaker',  {id: id} ,postButtonDeletePrepartakers);
 }
 
-function postButtonDelete(response){
+function postButtonDeletePrepartakers(response){
 	var form = $('<form action="/deletePrepartaker" method="POST" id="deleteForm" class="form-horizontal">'+
 								'<h2>	Confirmar la eliminación de:</h2>'+
 								'<h3><em>'+ response[0].partakerName +'</h3></em>'+
@@ -180,16 +191,62 @@ function postButtonDelete(response){
 		$('#deleteFormContainer').find('h2:first').before(alertaUsuarioValidado);
 	}
 }
+/*
+	All the button and post functions for Partakers
+*/
+function buttonModifyPartakers(event){
+	event.preventDefault();
+	$('#modifyFormContainer').show();
+	$('#deleteFormContainer').hide();
+	$('#adicionalInfoContainer').hide();
+	$('#adicionalInfoContainer').fadeIn();
+	$('#modifyFormContainer').children().remove();
+
+	var id = $(this).closest('tr').find('.nameColumn').data('prepartaker-id');
+	$.post('searchPartaker',  {id: id}, postButtonModifyPartakers);
+}
+
+function postButtonModifyPartakers(response){
+	
+}
+
+function buttonDeletePartakers(event){
+	event.preventDefault();
+	$('#modifyFormContainer').hide();
+	$('#deleteFormContainer').show();
+	$('#adicionalInfoContainer').hide();
+	$('#adicionalInfoContainer').fadeIn();
+	$('#deleteFormContainer').children().remove();
+
+	var id = $(this).closest('tr').find('.nameColumn').data('prepartaker-id');
+	$.post('searchPrepartaker',  {id: id}, postButtonDeletePartakers);
+}
+
+function postButtonDeletePartakers(response){
+	var form = $('<form action="/deletePartaker" method="POST" id="deleteForm" class="form-horizontal">'+
+								'<h2>	Confirmar la eliminación de:</h2>'+
+								'<h3><em>'+ response[0].partakerName +'</h3></em>'+
+								'<input class="hidden" type="text" name="partakerId" id="partakerId" value="'+ response[0].partakerId +'">'+
+								'<button type="submit" class="btn btn-danger btn-large btn-block">  Eliminar</button>'+
+							'</form>');
+	$('#deleteFormContainer').append(form);
+}
+
+function buttonSeeCredentialPartakers(event){
+	event.preventDefault();
+	$('#modifyFormContainer').hide();
+	$('#deleteFormContainer').hide();
+}
 
 function hideAddicionalPanel(){
 	//Hide the panel below
 	$(this).parent().fadeOut();
 }
 
-function postPrepartakersTable(response){
+function postGetPrepartakersTable(response){
 	var trToAppend;
 	trToAppend = $("<tr>"+
-								"<td class = 'nameColumn iterator' data-prepartaker-name='"+ response[0].partakerName +"'>"+ response[0].partakerName +"</td>"+
+								"<td class = 'nameColumn iterator' data-prepartaker-id='"+ response[0].partakerId +"'>"+ response[0].partakerName +"</td>"+
 								"<td>"+ response[0].partakerMail +"</td>"+
 								"<td><button class='btn  btn-success' type='button'>Validar</button></td>"+
 								"<td><button class='btn  btn-warning' type='button'>Modificar</button></td>"+
@@ -199,7 +256,7 @@ function postPrepartakersTable(response){
 
 	for( i = 1;i < response.length;i++){
 		trToAppend = $("<tr>"+
-									"<td class = 'nameColumn' data-prepartaker-name='"+ response[i].partakerName +"'>"+ response[i].partakerName +"</td>"+
+									"<td class = 'nameColumn' data-prepartaker-id='"+ response[i].partakerId +"'>"+ response[i].partakerName +"</td>"+
 									"<td>"+ response[i].partakerMail +"</td>"+
 									"<td><button class='btn  btn-success' type='button'>Validar</button></td>"+
 									"<td><button class='btn  btn-warning' type='button'>Modificar</button></td>"+
@@ -209,21 +266,81 @@ function postPrepartakersTable(response){
 	}
 }
 
+function postGetPartakersTable(response){
+	var trToAppend;
+	trToAppend = $("<tr>"+
+								"<td class = 'nameColumn iterator' data-prepartaker-id='"+ response[0].partakerId +"'>"+ response[0].partakerName +"</td>"+
+								"<td>"+ response[0].partakerMail +"</td>"+
+								"<td><button class='btn  btn-warning' type='button'>Consultar/Modificar</button></td>"+
+								"<td><button class='btn  btn-danger' type='button'>Eliminar</button></td>"+
+								"<td><button class='btn  btn-info' type='button'>Ver Credencial</button></td>"+
+								"</tr>");
+	$('#partakersTable').append(trToAppend);
+	for( i = 1;i < response.length;i++){
+		trToAppend = $("<tr>"+
+									"<td class = 'nameColumn' data-prepartaker-id='"+ response[i].partakerId +"'>"+ response[i].partakerName +"</td>"+
+									"<td>"+ response[i].partakerMail +"</td>"+
+									"<td><button class='btn  btn-warning' type='button'>Consultar/Modificar</button></td>"+
+									"<td><button class='btn  btn-danger' type='button'>Eliminar</button></td>"+
+									"<td><button class='btn  btn-info' type='button'>Ver Credencial</button></td>"+
+									"</tr>");
+		$('#partakersTable').append(trToAppend);
+	}
+}
+
+function postGetMessagesTable(response){
+}
+
+function postGetEchosTable(response){
+}
+
 function start(){
+	//variables
+	var urlPathname = window.location.pathname;
+
+	//Add all the listeners
 	$('.sidebar').on('click','li',changeContainerPanel);
-	$('#prepartakersFilterForm').on('keyup','.prepartakersFilter',prepartakersTableFilter);	
-	$('#prepartakersTable').on('click','.btn-success',buttonValidate);
-	$('#prepartakersTable').on('click','.btn-warning',buttonModify);
-	$('#prepartakersTable').on('click','.btn-danger',buttonDelete);
-	$('#prepartakersAdicionalInfoContainer').on('click','.btn-mini',hideAddicionalPanel);
+	$('#adicionalInfoContainer').on('click','.btn-mini',hideAddicionalPanel);
+	$('#filterForm').on('keyup','.prepartakersFilter',tableFilter);
+
+	//Prepartakers table button listeners
+	$('#prepartakersTable').on('click','.btn-success',buttonValidatePrepartakers);
+	$('#prepartakersTable').on('click','.btn-warning',buttonModifyPrepartakers);
+	$('#prepartakersTable').on('click','.btn-danger',buttonDeletePrepartakers);
+
+	//Partakers table button listeners
+	$('#partakersTable').on('click','.btn-warning',buttonModifyPartakers);
+	$('#partakersTable').on('click','.btn-danger',buttonDeletePartakers);
+	$('#partakersTable').on('click','.btn-info',buttonSeeCredentialPartakers);
 
 	//Hide all the stuff that shouldn't be shown at first 
-	$('#prepartakersAdicionalInfoContainer').hide();
+	$('#adicionalInfoContainer').hide();
 	$('#modifyFormContainer').hide();
 	$('#validateFormContainer').hide();
 	$('#deleteFormContainer').hide();
 
-	$.post('getPrepartakersTable',postPrepartakersTable);
+	switch(urlPathname){
+		case '/organiserPanel':			
+			$.post('getPrepartakersTable',postGetPrepartakersTable);
+			$('#organiserMainNav').find('li').removeClass('active');
+			$('#organiserMainNav').find('li:first').addClass('active');
+		break;
+		case '/organiserPanelRecords':
+			$.post('getPartakersTable',postGetPartakersTable);
+			$('#organiserMainNav').find('li').removeClass('active');
+			$('#organiserMainNav').find('li:first').next().addClass('active');
+		break;
+		case '/organiserPanelMessages':
+			$.post('getMessagesTable',postGetMessagesTable);
+			$('#organiserMainNav').find('li').removeClass('active');
+			$('#organiserMainNav').find('li:last').prev().addClass('active');
+		break;
+		case '/organiserPanelEchos':
+			$.post('getEchosTable',postGetEchosTable);
+			$('#organiserMainNav').find('li').removeClass('active');
+			$('#organiserMainNav').find('li:last').addClass('active');
+		break;
+	}
 }
 
 $(document).on('ready', start);

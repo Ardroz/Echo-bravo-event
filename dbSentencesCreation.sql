@@ -50,6 +50,9 @@ CREATE  TABLE IF NOT EXISTS `echodb`.`prePartakers` (
   `partakerMail` VARCHAR(45) NOT NULL ,
   `partakerPhone` VARCHAR(45) NOT NULL ,
   `partakerAddress` VARCHAR(45) NOT NULL ,
+  `partakerAge` VARCHAR(10) NOT NULL ,
+  `partakerGender` VARCHAR(10) NOT NULL ,
+  `validateFlag` INT(5) NOT NULL ,
   PRIMARY KEY (`partakerId`) )
 ENGINE = InnoDB;
 
@@ -113,3 +116,18 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+INSERT INTO  `echodb`.`events` (
+`eventId` ,
+`eventName` ,
+`eventOrganiser` ,
+`organiserPassword` ,
+`eventDescription` ,
+`eventVenue` ,
+`eventDate` ,
+`eventCharge` ,
+`eventChargeFlag`
+)
+VALUES (
+NULL ,  'ExpoBátiz',  'danblack13',  'password',  'Exposición de difusión cultural',  'CECyT #9',  '17/05/13',  'none',  '0'
+);
