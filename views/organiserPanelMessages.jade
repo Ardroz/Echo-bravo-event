@@ -11,25 +11,21 @@ block content
 						h4	Mensajes
 					li.active(data-li-name="list")
 						a	Lista
-					li(data-li-name="newMessages")
-						a	Nuevos
-					li(data-li-name="delete")
-						a	Eliminar
 			.span9
 				.container#list
-					h2.text-center	Registros
-					table.table.table-hover
-						.hero-unit
-							h1	Who are you going to register?
-				.container.hidden#newMessages
-					h2.text-center	Nuevos Mensajes
-					table.table.table-hover
-						.hero-unit
-							h1	Who are you going to search?
-				.container.hidden#delete
-					h2.text-center	Eliminar
-					table.table.table-hover
-						.hero-unit
-							h1	Who are you going to delete??
+					h2.text-center	Mensajes
+					form.form-search.text-right#filterForm
+						input.input-medium.search-query.prepartakersFilter(type='text')
+					table.table.table-hover#messagesTable
+						tr
+							td
+								h3	Usuario
+							td
+								h3	Mensaje
+							td
+					.container#adicionalInfoContainer
+						button.btn.btn-mini.btn-danger.pull-right	X
+						hr
+						.container.text-center#deleteFormContainer
 					
 block exclusive-scripts

@@ -207,7 +207,30 @@ function buttonModifyPartakers(event){
 }
 
 function postButtonModifyPartakers(response){
-	
+	var form = $('<form action="/modifyPartaker" method="POST" id="modifyPartaker" class="form-horizontal">'+
+									'<div class="control-group">'+
+										'<label for="user" class="control-label pull-right"> Usuario</label>'+
+										'<div class="controls">'+
+											'<input disabled type="text" id="user" name="user" required="required" class="input-large" value='+response[0].partakerUser+'>'+
+										'</div>'+
+									'</div>'+
+									'<div class="control-group">'+
+										'<label for="password" class="control-label">  Contraseña</label>'+
+										'<div class="controls">'+
+											'<input disabled type="text" id="password" name="password" required="required" class="input-large" value='+response[0].partakerPassword+'>'+
+										'</div>'+
+									'</div>'+
+									'<div class="control-group">'+
+										'<label for="folio" class="control-label">  Folio</label>'+
+										'<div class="controls">'+
+											'<input type="text" id="folio" name="folio" required="required" class="input-large" value='+response[0].partakerBaucher+'>'+
+										'</div>'+
+									'</div>'+
+									'<input class="hidden" type="text" name="partakerId" id="partakerId" value="'+ response[0].partakerId +'">'+
+									'<button type="submit" class="btn btn-warning btn-large btn-block">  Modificar</button>'+
+								'</form>'+
+							'</div>');
+	$('#modifyFormContainer').append(form);
 }
 
 function buttonDeletePartakers(event){
@@ -246,7 +269,7 @@ function hideAddicionalPanel(){
 function postGetPrepartakersTable(response){
 	var trToAppend;
 	trToAppend = $("<tr>"+
-								"<td class = 'nameColumn iterator' data-prepartaker-id='"+ response[0].partakerId +"'>"+ response[0].partakerName +"</td>"+
+								"<td class = 'nameColumn iterator' data-prepartaker-name='"+response[0].partakerName +"' data-prepartaker-id='"+ response[0].partakerId +"'>"+ response[0].partakerName +"</td>"+
 								"<td>"+ response[0].partakerMail +"</td>"+
 								"<td><button class='btn  btn-success' type='button'>Validar</button></td>"+
 								"<td><button class='btn  btn-warning' type='button'>Modificar</button></td>"+
@@ -256,7 +279,7 @@ function postGetPrepartakersTable(response){
 
 	for( i = 1;i < response.length;i++){
 		trToAppend = $("<tr>"+
-									"<td class = 'nameColumn' data-prepartaker-id='"+ response[i].partakerId +"'>"+ response[i].partakerName +"</td>"+
+									"<td class = 'nameColumn' data-prepartaker-name='"+response[i].partakerName +"' data-prepartaker-id='"+ response[i].partakerId +"'>"+ response[i].partakerName +"</td>"+
 									"<td>"+ response[i].partakerMail +"</td>"+
 									"<td><button class='btn  btn-success' type='button'>Validar</button></td>"+
 									"<td><button class='btn  btn-warning' type='button'>Modificar</button></td>"+
@@ -269,7 +292,7 @@ function postGetPrepartakersTable(response){
 function postGetPartakersTable(response){
 	var trToAppend;
 	trToAppend = $("<tr>"+
-								"<td class = 'nameColumn iterator' data-prepartaker-id='"+ response[0].partakerId +"'>"+ response[0].partakerName +"</td>"+
+								"<td class = 'nameColumn iterator' data-prepartaker-name='"+response[0].partakerName +"' data-prepartaker-id='"+ response[0].partakerId +"'>"+ response[0].partakerName +"</td>"+
 								"<td>"+ response[0].partakerMail +"</td>"+
 								"<td><button class='btn  btn-warning' type='button'>Consultar/Modificar</button></td>"+
 								"<td><button class='btn  btn-danger' type='button'>Eliminar</button></td>"+
@@ -278,7 +301,7 @@ function postGetPartakersTable(response){
 	$('#partakersTable').append(trToAppend);
 	for( i = 1;i < response.length;i++){
 		trToAppend = $("<tr>"+
-									"<td class = 'nameColumn' data-prepartaker-id='"+ response[i].partakerId +"'>"+ response[i].partakerName +"</td>"+
+									"<td class = 'nameColumn' data-prepartaker-name='"+response[i].partakerName +"' data-prepartaker-id='"+ response[i].partakerId +"'>"+ response[i].partakerName +"</td>"+
 									"<td>"+ response[i].partakerMail +"</td>"+
 									"<td><button class='btn  btn-warning' type='button'>Consultar/Modificar</button></td>"+
 									"<td><button class='btn  btn-danger' type='button'>Eliminar</button></td>"+
@@ -289,6 +312,11 @@ function postGetPartakersTable(response){
 }
 
 function postGetMessagesTable(response){
+	var trToAppend;
+	
+	$.post('searchPrepartaker', {},function(other){
+		console.log(other);
+	});
 }
 
 function postGetEchosTable(response){

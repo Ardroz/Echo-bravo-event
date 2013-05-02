@@ -256,7 +256,20 @@ var modifyPrepartaker = function(req, res){
 };
 
 var modifyPartaker = function(req, res){
+	var database = new databaseInstance(),
+			newFolio = req.body.folio,
+			partakerId = req.body.partakerId,
+			updatePartakerQuery =	'UPDATE ' + databaseName +'.'+ partakersTable + ' SET '+
+														'partakerBaucher = "'+ newFolio + '" WHERE partakerId = ' + partakerId;
 
+	console.log(updatePartakerQuery);
+	database.query(updatePartakerQuery, function(error, result, row){
+		if(!error) {
+			res.redirect('/organiserPanel');
+		}else{
+			console.log('Error modifyPartakersQuery');
+		}
+	});
 };
 
 var searchPrepartaker = function(req, res){
