@@ -312,11 +312,23 @@ function postGetPartakersTable(response){
 }
 
 function postGetMessagesTable(response){
-	var trToAppend;
+	var trToAppend,
+			prepartakerId,
+			message;
+	trToAppend =	$("<tr>"+
+								"<td data-prepartaker-id="+ response[0].eventPartakerId +">"+ response[0].mensaje +"</td>"+
+								"<td><button class='btn  btn-danger' type='button'>Eliminar</button></td>"+
+								"</tr>");
+	$('#messagesTable').append(trToAppend);
+	for(i = 1;i < response.length;i++){
+		trToAppend =	$("<tr>"+
+									"<td data-prepartaker-id="+ response[i].eventPartakerId +">"+ response[i].mensaje +"</td>"+
+									"<td><button class='btn  btn-danger' type='button'>Eliminar</button></td>"+
+									"</tr>");
+		$('#messagesTable').append(trToAppend);
+	}
 	
-	$.post('searchPrepartaker', {},function(other){
-		console.log(other);
-	});
+			$('#messagesTable').find('tr:last').find('td:first').prepend($('<td>Ola</td>'));
 }
 
 function postGetEchosTable(response){
