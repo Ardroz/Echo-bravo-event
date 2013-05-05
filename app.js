@@ -209,6 +209,34 @@ var deletePartaker = function(req, res){
 	});
 };
 
+var deleteMessage = function(req, res){
+	var database = new databaseInstance(),
+			messageId = req.body.messageId,
+			deleteMessageQuery = 'DELETE FROM ' + databaseName + '.' + messagesTable + ' WHERE messageId =' + messageId;
+
+	database.query(deleteMessageQuery, function(error,result,row){
+		if(!error) {
+			res.redirect('/organiserPanelMessages');
+		}else{
+			console.log('Error deleteMessage');
+		}
+	});
+};
+
+var deleteEcho = function(req, res){
+	var database = new databaseInstance(),
+			echoId = req.body.id,
+			deleteEchoQuery = 'DELETE FROM ' + databaseName + '.' + echosTable + ' WHERE echoId =' + echoId;
+
+	database.query(deleteEchoQuery, function(error,result,row){
+		if(!error) {
+			res.redirect('/organiserPanelEchos');
+		}else{
+			console.log('Error deleteEcho');
+		}
+	});
+};
+
 var insertPrepartaker =  function(req, res){
 	var database = new databaseInstance(),
 			name = req.body.name.replace(/['"<>=]/,""),
@@ -225,6 +253,22 @@ var insertPrepartaker =  function(req, res){
 			res.redirect('/organiserPanel');
 		}else{
 			console.log('Error insertPrepartaker');
+		}
+	});
+};
+
+var insertEcho =  function(req, res){
+	var database = new databaseInstance(),
+			echo = req.body.echo.replace(/['"<>=]/,"");
+			insertNewEchoQuery= 'INSERT INTO  '+ databaseName + '.'+echosTable+' ('+
+															'echoId,eventId,echo) VALUES('+
+															'NULL ,"'+eventId+'","'+echo+'")';
+console.log(insertNewEchoQuery);
+	database.query(insertNewEchoQuery, function(error, result, row){
+		if(!error) {
+			res.redirect('/organiserPanelEchos');
+		}else{
+			console.log('Error insertEcho');
 		}
 	});
 };
@@ -272,6 +316,23 @@ var modifyPartaker = function(req, res){
 	});
 };
 
+var modifyEcho = function(req, res){
+	var database = new databaseInstance(),
+			echo = req.body.echo,
+			echoId = req.body.echoId,
+			updatePartakerQuery =	'UPDATE ' + databaseName +'.'+ echosTable + ' SET '+
+														'echo = "'+ echo + '" WHERE echoId = ' + echoId;
+
+	console.log(updatePartakerQuery);
+	database.query(updatePartakerQuery, function(error, result, row){
+		if(!error) {
+			res.redirect('/organiserPanelEchos');
+		}else{
+			console.log('Error modifyPartakersQuery');
+		}
+	});
+};
+
 var searchPrepartaker = function(req, res){
 	var database = new databaseInstance();
 	var searchPrepartakerQuery =  'SELECT * FROM ' + databaseName + '.'+prePartakersTable + ' WHERE partakerid = "' + req.body.id + '"';
@@ -294,6 +355,32 @@ var searchPartaker = function(req, res){
 			res.send(result);
 		}else{
 			console.log('Error searchPrepartakersQuery');
+		}
+	});
+};
+
+var searchMessage = function(req, res){
+	var database = new databaseInstance();
+	var searchMessageQuery =  'SELECT * FROM ' + databaseName + '.'+messagesTable + ' WHERE messageId = "' + req.body.id + '"';
+
+	database.query(searchMessageQuery, function(error, result, row){
+		if(!error) {
+			res.send(result);
+		}else{
+			console.log('Error searchPrepartakersQuery');
+		}
+	});
+};
+
+var searchEcho = function(req, res){
+	var database = new databaseInstance();
+	var searchEchoQuery =  'SELECT * FROM ' + databaseName + '.'+echosTable + ' WHERE echoId = "' + req.body.id + '"';
+
+	database.query(searchEchoQuery, function(error, result, row){
+		if(!error) {
+			res.send(result);
+		}else{
+			console.log('Error searchEchoQuery');
 		}
 	});
 };
@@ -334,11 +421,17 @@ app.post('/getMessagesTable', getMessagesTable);
 app.post('/getEchosTable', getEchosTable);
 app.post('/deletePrepartaker', deletePrepartaker);
 app.post('/deletePartaker', deletePartaker);
+app.post('/deleteMessage', deleteMessage);
+app.post('/deleteEcho', deleteEcho);
 app.post('/insertPrepartaker', insertPrepartaker);
+app.post('/insertEcho', insertEcho);
 app.post('/modifyPrepartaker', modifyPrepartaker);
 app.post('/modifyPartaker', modifyPartaker);
+app.post('/modifyEcho', modifyEcho);
 app.post('/searchPrepartaker', searchPrepartaker);
 app.post('/searchPartaker', searchPartaker);
+app.post('/searchMessage', searchMessage);
+app.post('/searchEcho', searchEcho);
 app.post('/validatePrepartaker', validatePrepartaker);
 
 https.createServer(httpsStuff, app).listen(app.get('port'), function(){

@@ -228,8 +228,7 @@ function postButtonModifyPartakers(response){
 									'</div>'+
 									'<input class="hidden" type="text" name="partakerId" id="partakerId" value="'+ response[0].partakerId +'">'+
 									'<button type="submit" class="btn btn-warning btn-large btn-block">  Modificar</button>'+
-								'</form>'+
-							'</div>');
+								'</form>');
 	$('#modifyFormContainer').append(form);
 }
 
@@ -259,6 +258,93 @@ function buttonSeeCredentialPartakers(event){
 	event.preventDefault();
 	$('#modifyFormContainer').hide();
 	$('#deleteFormContainer').hide();
+}
+/*
+	All the button and post functions for messages
+*/
+function buttonInfoMessage(event){
+	event.preventDefault();
+	$('#informationFormContainer').show();
+	$('#deleteFormContainer').hide();
+	$('#adicionalInfoContainer').hide();
+	$('#adicionalInfoContainer').fadeIn();
+	$('#informationFormContainer').children().remove();
+
+	var id = $(this).closest('tr').children(':first-child').data('prepartaker-id');
+	$.post('searchPrepartaker',{id: id}, postButtonInfoMessage);
+}
+
+function postButtonInfoMessage(response){
+	var form = $('<div class="container alert alert-info text-center">'+
+								'<ul class="nav nav-list">'+
+									'<li><h4>'+response[0].partakerName+'</h4></li><hr>'+
+									'<li><h4>'+response[0].partakerMail+'</h4></li><hr>'+
+								'</ul>'+
+							'</div>');
+	$('#informationFormContainer').append(form);
+}
+
+function buttonDeleteMessage(event){
+	var $this = $(this);
+	event.preventDefault();
+	$('#informationFormContainer').hide();
+	$('#deleteFormContainer').show();
+	$('#adicionalInfoContainer').hide();
+	$('#adicionalInfoContainer').fadeIn();
+	$('#deleteFormContainer').children().remove();
+
+	var id = $(this).closest('tr').children(':first-child').data('message-id');
+	$.post('searchMessage',{id: id}, postButtonDeleteMessage);
+}
+
+function postButtonDeleteMessage(response){
+	var form = $('<form action="/deleteMessage" method="POST" id="deleteMessageForm" class="form-horizontal">'+
+								'<h2>	Confirmar la eliminación del mensaje:</h2>'+
+								'<h3><em>'+ response[0].mensaje +'</h3></em>'+
+								'<input class="hidden" type="text" name="messageId" id="messageId" value="'+ response[0].messageId +'">'+
+								'<button type="submit" class="btn btn-danger btn-large btn-block">  Eliminar</button>'+
+							'</form>');
+	$('#deleteFormContainer').append(form);
+}
+/*
+	All the button and post functions for messages
+*/
+function buttonModifyEcho(event){
+	event.preventDefault();
+	$('#modifyFormContainer').show();
+	$('#deleteFormContainer').hide();
+	$('#adicionalInfoContainer').hide();
+	$('#adicionalInfoContainer').fadeIn();
+	$('#modifyFormContainer').children().remove();
+
+	var id = $(this).closest('tr').children(':first-child').data('echo-id');
+	$.post('searchEcho',  {id: id}, postButtonModifyEcho);
+}
+
+function postButtonModifyEcho(response){
+	var form = $('<form action="/modifyEcho" method="POST" id="modifyEcho" class="form-horizontal">'+
+									'<div class="control-group">'+
+										'<label for="user" class="control-label pull-right"> Echo</label>'+
+										'<div class="controls">'+
+											'<textarea maxlength="140" type="text" id="echo" name="echo" required="required">'+response[0].echo+'</textarea>'+
+										'</div>'+
+									'</div>'+
+									'<input class="hidden" type="text" name="echoId" id="echoId" value="'+ response[0].echoId +'">'+
+									'<button type="submit" class="btn btn-warning btn-large btn-block">  Modificar</button>'+
+								'</form>');
+	$('#modifyFormContainer').append(form);
+}
+
+function buttonDeleteEcho(event){
+	var flag = confirm("Seguro que deseas eliminarlo?");
+	if(flag){
+		var id = $(this).closest('tr').children(':first-child').data('echo-id');
+		$.post('deleteEcho',  {id: id}, postButtonDeleteEcho);
+	}
+}
+
+function postButtonDeleteEcho(response){
+	location.reload();
 }
 
 function hideAddicionalPanel(){
@@ -312,26 +398,39 @@ function postGetPartakersTable(response){
 }
 
 function postGetMessagesTable(response){
-	var trToAppend,
-			prepartakerId,
-			message;
+	var trToAppend;
 	trToAppend =	$("<tr>"+
-								"<td data-prepartaker-id="+ response[0].eventPartakerId +">"+ response[0].mensaje +"</td>"+
+								"<td class='iterator' data-message-id="+response[response.length-1].messageId+" data-prepartaker-id="+ response[response.length-1].eventPartakerId +">"+ response[response.length-1].mensaje +"</td>"+
+								"<td><button class='btn  btn-info' type='button'>Ver remitente</button></td>"+
 								"<td><button class='btn  btn-danger' type='button'>Eliminar</button></td>"+
 								"</tr>");
 	$('#messagesTable').append(trToAppend);
-	for(i = 1;i < response.length;i++){
+	for(i = response.length-2;i >= 0;i--){
 		trToAppend =	$("<tr>"+
-									"<td data-prepartaker-id="+ response[i].eventPartakerId +">"+ response[i].mensaje +"</td>"+
+									"<td data-message-id="+response[i].messageId+" data-prepartaker-id="+ response[i].eventPartakerId +">"+ response[i].mensaje +"</td>"+
+									"<td><button class='btn  btn-info' type='button'>Ver remitente</button></td>"+
 									"<td><button class='btn  btn-danger' type='button'>Eliminar</button></td>"+
 									"</tr>");
 		$('#messagesTable').append(trToAppend);
 	}
-	
-			$('#messagesTable').find('tr:last').find('td:first').prepend($('<td>Ola</td>'));
 }
 
 function postGetEchosTable(response){
+	var trToAppend;
+	trToAppend =	$("<tr>"+
+								"<td class='iterator' data-echo-id="+ response[response.length-1].echoId +">"+ response[response.length-1].echo +"</td>"+
+								"<td><button class='btn  btn-warning' type='button'>Modificar</button></td>"+
+								"<td><button class='btn  btn-danger' type='button'>Eliminar</button></td>"+
+								"</tr>");
+	$('#echosTable').append(trToAppend);
+	for(i = response.length-2;i >= 0;i--){
+		trToAppend =	$("<tr>"+
+									"<td data-echo-id="+response[i].echoId+" >"+ response[i].echo +"</td>"+
+									"<td><button class='btn  btn-warning' type='button'>Modificar</button></td>"+
+									"<td><button class='btn  btn-danger' type='button'>Eliminar</button></td>"+
+									"</tr>");
+		$('#echosTable').append(trToAppend);
+	}
 }
 
 function start(){
@@ -352,6 +451,14 @@ function start(){
 	$('#partakersTable').on('click','.btn-warning',buttonModifyPartakers);
 	$('#partakersTable').on('click','.btn-danger',buttonDeletePartakers);
 	$('#partakersTable').on('click','.btn-info',buttonSeeCredentialPartakers);
+
+	//Messages table button listeners
+	$('#messagesTable').on('click','.btn-info',buttonInfoMessage);	
+	$('#messagesTable').on('click','.btn-danger',buttonDeleteMessage);
+
+	//Echos table button listeners
+	$('#echosTable').on('click','.btn-warning',buttonModifyEcho);	
+	$('#echosTable').on('click','.btn-danger',buttonDeleteEcho);
 
 	//Hide all the stuff that shouldn't be shown at first 
 	$('#adicionalInfoContainer').hide();
