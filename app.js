@@ -239,7 +239,7 @@ var deleteEcho = function(req, res){
 
 var insertPrepartaker =  function(req, res){
 	var database = new databaseInstance(),
-			name = req.body.name.replace(/['"<>=]/,""),
+			name = req.body.name.replace(/['"<>+-=]/,""),
 			age = req.body.age,
 			gender = req.body.gender,
 			mail = req.body.mail.replace(/['"<>=]/,""),
@@ -263,7 +263,6 @@ var insertEcho =  function(req, res){
 			insertNewEchoQuery= 'INSERT INTO  '+ databaseName + '.'+echosTable+' ('+
 															'echoId,eventId,echo) VALUES('+
 															'NULL ,"'+eventId+'","'+echo+'")';
-console.log(insertNewEchoQuery);
 	database.query(insertNewEchoQuery, function(error, result, row){
 		if(!error) {
 			res.redirect('/organiserPanelEchos');
