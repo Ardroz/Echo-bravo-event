@@ -53,6 +53,7 @@ CREATE  TABLE IF NOT EXISTS `echodb`.`prePartakers` (
   `partakerAge` VARCHAR(10) NOT NULL ,
   `partakerGender` VARCHAR(10) NOT NULL ,
   `validateFlag` INT(5) NOT NULL ,
+  `appFlag` INT(5) NOT NULL ,
   PRIMARY KEY (`partakerId`) )
 ENGINE = InnoDB;
 
@@ -106,6 +107,7 @@ DROP TABLE IF EXISTS `echodb`.`questionsn` ;
 CREATE  TABLE IF NOT EXISTS `echodb`.`questionsn` (
   `questionId` INT ZEROFILL NOT NULL AUTO_INCREMENT ,
   `eventId` INT NOT NULL ,
+  `question` VARCHAR(200) NOT NULL ,
   `optionA` INT NULL ,
   `optionB` INT NULL ,
   `optionC` INT NULL ,
