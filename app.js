@@ -16,7 +16,7 @@ var aesKey			= 'c!A=wq(0c&yw@3w',
 	eventsTable		= 'events',
 	eventName			= 'evento',
 	eventId				= '0000000001',
-	prePartakersTable = 'prePartakers',
+	prePartakersTable = 'prepartakers',
 	partakersTable= 'partakers',
 	echosTable				= 'echosn',
 	messagesTable	= 'messagesn';
@@ -52,7 +52,7 @@ if ('development' == app.get('env')) {
 function databaseInstance(){
 	var connection = mysql.createConnection({
 		host     : 'localhost',
-		password : '',
+		password : 'n0m3l0',
 		user     : 'root'
 	});
 	return connection;
@@ -74,6 +74,7 @@ app.get('/organiserPanelRecords', login, routes.organiserPanelRecords);
 app.get('/organiserPanelMessages', login, routes.organiserPanelMessages);
 app.get('/organiserPanelEchos', login, routes.organiserPanelEchos);
 app.get('/organiserLogin', routes.organiserLogin);
+app.get('/nosotros', routes.nosotros);
 
 //handling functions
 var auth = function(req, res){
@@ -393,9 +394,8 @@ var validatePrepartaker =  function(req, res){
 			updatePrepartakerFlagQuery =  'UPDATE  '+ databaseName + '.'+prePartakersTable+' SET '+
 																		'validateFlag = 1 WHERE partakerId = "' + partakerId + '"',
 			insertNewPartakerQuery= 'INSERT INTO  '+ databaseName + '.'+partakersTable+' ('+
-															'partakerId,partakerUser,partakerPassword,partakerBaucher) VALUES('+
-															'"'+partakerId+'",'+'"'+user+'",'+'"'+password+'",'+'"'+folio+'")';
-
+															'partakerId,partakerUser,partakerPassword,partakerBaucher,appFlag) VALUES('+
+															'"'+partakerId+'",'+'"'+user+'",'+'"'+password+'",'+'"'+folio+'",0)';	
 	database.query(updatePrepartakerFlagQuery, function(error, result, row){
 		if(!error) {
 			database.query(insertNewPartakerQuery, function(error, result, row){

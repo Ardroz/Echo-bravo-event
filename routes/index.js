@@ -26,3 +26,7 @@ exports.organiserPanelEchos = function(req, res){
 exports.organiserLogin = function(req, res){
   res.render('organiserLogin', { title: 'echo_bravo' });
 };
+
+exports.nosotros = function(req, res){
+  res.render('nosotros', { title: 'echo_bravo' });
+};
