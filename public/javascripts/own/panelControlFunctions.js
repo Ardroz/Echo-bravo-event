@@ -257,7 +257,12 @@ function postButtonDeletePartakers(response){
 function buttonSeeCredentialPartakers(event){
 	event.preventDefault();
 	$('#modifyFormContainer').hide();
-	$('#deleteFormContainer').hide();
+	$('#deleteFormContainer').show();
+	$('#adicionalInfoContainer').hide();
+	$('#adicionalInfoContainer').fadeIn();
+	$('#deleteFormContainer').children().remove();
+	var form = $('<div class="alert alert-error">Nuestros monos saiyayines trabajan en esta parte lamentamos el inconveniente</div>');
+	$('#deleteFormContainer').append(form);
 }
 /*
 	All the button and post functions for messages

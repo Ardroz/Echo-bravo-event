@@ -75,6 +75,7 @@ app.get('/organiserPanelMessages', login, routes.organiserPanelMessages);
 app.get('/organiserPanelEchos', login, routes.organiserPanelEchos);
 app.get('/organiserLogin', routes.organiserLogin);
 app.get('/nosotros', routes.nosotros);
+app.get('/credentials', routes.credentials);
 
 //handling functions
 var auth = function(req, res){
