@@ -254,15 +254,11 @@ function postButtonDeletePartakers(response){
 	$('#deleteFormContainer').append(form);
 }
 
-function buttonSeeCredentialPartakers(event){
-	event.preventDefault();
+function buttonSeeCredentialPartakers(){
 	$('#modifyFormContainer').hide();
 	$('#deleteFormContainer').show();
 	$('#adicionalInfoContainer').hide();
-	$('#adicionalInfoContainer').fadeIn();
 	$('#deleteFormContainer').children().remove();
-	var form = $('<div class="alert alert-error">Nuestros monos saiyayines trabajan en esta parte lamentamos el inconveniente</div>');
-	$('#deleteFormContainer').append(form);
 }
 /*
 	All the button and post functions for messages
@@ -387,7 +383,9 @@ function postGetPartakersTable(response){
 								"<td>"+ response[0].partakerMail +"</td>"+
 								"<td><button class='btn  btn-warning' type='button'>Consultar/Modificar</button></td>"+
 								"<td><button class='btn  btn-danger' type='button'>Eliminar</button></td>"+
-								"<td><button class='btn  btn-info' type='button'>Ver Credencial</button></td>"+
+								"<td><form action='credentials' method='POST' target='_blank'>"+
+								"<input class='hidden' type='text' name='partakerId' id='partakerId' value='"+ response[0].partakerId +"'>"+
+								"<button type='submit' class='btn  btn-info' type='button'>Ver Credencial</button></form></td>"+
 								"</tr>");
 	$('#partakersTable').append(trToAppend);
 	for( i = 1;i < response.length;i++){
@@ -396,7 +394,9 @@ function postGetPartakersTable(response){
 									"<td>"+ response[i].partakerMail +"</td>"+
 									"<td><button class='btn  btn-warning' type='button'>Consultar/Modificar</button></td>"+
 									"<td><button class='btn  btn-danger' type='button'>Eliminar</button></td>"+
-									"<td><button class='btn  btn-info' type='button'>Ver Credencial</button></td>"+
+									"<td><form action='credentials' method='POST' target='_blank'>"+
+									"<input class='hidden' type='text' name='partakerId' id='partakerId' value='"+ response[i].partakerId +"'>"+
+									"<button type='submit' class='btn  btn-info' type='button'>Ver Credencial</button></form></td>"+
 									"</tr>");
 		$('#partakersTable').append(trToAppend);
 	}

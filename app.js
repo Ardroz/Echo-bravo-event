@@ -19,7 +19,8 @@ var aesKey			= 'c!A=wq(0c&yw@3w',
 	prePartakersTable = 'prepartakers',
 	partakersTable= 'partakers',
 	echosTable				= 'echosn',
-	messagesTable	= 'messagesn';
+	messagesTable	= 'messagesn',
+	ip = '189.245.69.89';
 
 var httpsStuff = {
 		key: fs.readFileSync('./privatekey.pem'),
@@ -51,7 +52,7 @@ if ('development' == app.get('env')) {
 
 function databaseInstance(){
 	var connection = mysql.createConnection({
-		host     : 'localhost',
+		host     : ip,
 		password : 'n0m3l0',
 		user     : 'root'
 	});
@@ -66,16 +67,31 @@ function login(req, res, next){
 	}
 }
 
+function checkSesionLogin(req, res, next){
+	if(req.session.user){
+		res.redirect('/organiserPanel');
+		}else{
+			next();
+	}
+}
+
+function closeSesion(req, res,next){
+	req.session.user = null;
+	res.redirect('/');
+}
+
 //GET pages
 app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/organiserPanel',login, routes.organiserPanel);
+app.get('/closeSesion',closeSesion);
 app.get('/organiserPanelRecords', login, routes.organiserPanelRecords);
 app.get('/organiserPanelMessages', login, routes.organiserPanelMessages);
 app.get('/organiserPanelEchos', login, routes.organiserPanelEchos);
-app.get('/organiserLogin', routes.organiserLogin);
+app.get('/organiserLogin', checkSesionLogin, routes.organiserLogin);
 app.get('/nosotros', routes.nosotros);
-app.get('/credentials', routes.credentials);
+app.get('/preregistro', routes.preregistro);
+app.get('/credentials',routes.credentials);
 
 //handling functions
 var auth = function(req, res){
@@ -253,6 +269,11 @@ var insertPrepartaker =  function(req, res){
 	database.query(insertNewPrepartakerQuery, function(error, result, row){
 		if(!error) {
 			res.redirect('/organiserPanel');
+			if(req.session.user){
+				res.redirect('/organiserLogin');
+			}else{
+				res.redirect('/preregistro');
+			}
 		}else{
 			console.log('Error insertPrepartaker');
 		}
@@ -433,6 +454,7 @@ app.post('/searchPartaker', searchPartaker);
 app.post('/searchMessage', searchMessage);
 app.post('/searchEcho', searchEcho);
 app.post('/validatePrepartaker', validatePrepartaker);
+app.post('/credentials',routes.credentials);
 
 https.createServer(httpsStuff, app).listen(app.get('port'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
