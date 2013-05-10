@@ -13,7 +13,7 @@ var ip = 'localhost',
 		partakersTable= 'partakers',
 		echosTable				= 'echosn',
 		messagesTable	= 'messagesn',
-		ip = '189.245.69.89';
+		ip = 'localhost';
 
 function databaseInstance(){
 	var connection = mysql.createConnection({

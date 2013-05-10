@@ -20,7 +20,7 @@ var aesKey			= 'c!A=wq(0c&yw@3w',
 	partakersTable= 'partakers',
 	echosTable				= 'echosn',
 	messagesTable	= 'messagesn',
-	ip = '189.245.69.89';
+	ip = 'localhost';
 
 var httpsStuff = {
 		key: fs.readFileSync('./privatekey.pem'),
@@ -415,9 +415,9 @@ var validatePrepartaker =  function(req, res){
 			partakerId = req.body.partakerId,
 			updatePrepartakerFlagQuery =  'UPDATE  '+ databaseName + '.'+prePartakersTable+' SET '+
 																		'validateFlag = 1 WHERE partakerId = "' + partakerId + '"',
-			insertNewPartakerQuery= 'INSERT INTO  '+ databaseName + '.'+partakersTable+' ('+
+			insertNewPartakerQuery= 'INSERT INTO '+ databaseName + '.'+partakersTable+'('+
 															'partakerId,partakerUser,partakerPassword,partakerBaucher,appFlag) VALUES('+
-															'"'+partakerId+'",'+'"'+user+'",'+'"'+password+'",'+'"'+folio+'",0)';	
+															'"'+partakerId+'",'+'"'+user+'",'+'"'+password+'",'+'"'+folio+'",0)';	 
 	database.query(updatePrepartakerFlagQuery, function(error, result, row){
 		if(!error) {
 			database.query(insertNewPartakerQuery, function(error, result, row){
